@@ -1,0 +1,8 @@
+{
+    "projects": {
+        "default": "itcacademyeg",
+        "dev": "itcacademyeg",
+        "prod": "commerce-trial"
+    },
+    "targets": {}
+}
