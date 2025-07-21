@@ -41,6 +41,8 @@ build/Release
 # Dependency directories
 node_modules/
 functions/node_modules/
+node_modules/
+.firebase/
 functions/lib/
 jspm_packages/
 
