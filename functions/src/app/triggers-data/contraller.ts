@@ -47,4 +47,15 @@ export class TriggerController {
 
     return await this;
   }
+
+  async onUsersRulesChangedTrigger(snapshot: any, orderId: string) {
+    // const data = snapshot.after.data();
+    // if (data.status == orderStatus.refunded) {
+    //   const productService = new OperationsProductService();
+    //   const orderData = data;
+    //   productService.addProductMovement(orderData, orderId);
+    // }
+
+    return await this;
+  }
 }
