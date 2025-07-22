@@ -4,21 +4,21 @@ import { BaseRepository } from "../../data/db/repositories/base.repository";
 export class CartRepo extends BaseRepository {
   async addToCart(userId: string, data: any) {
     return await this.getSubCollectionReference(
-      CollectionsName.user,
+      CollectionsName.users,
       userId,
       CollectionsName.cart
     ).add(data);
   }
   async getCart(userId: string) {
     return await this.getSubCollectionReference(
-      CollectionsName.user,
+      CollectionsName.users,
       userId,
       CollectionsName.cart
     ).get();
   }
   async deleteCart(userId: string, cartId: string) {
     return await this.getSubCollectionReference(
-      CollectionsName.user,
+      CollectionsName.users,
       userId,
       CollectionsName.cart
     )
@@ -27,7 +27,7 @@ export class CartRepo extends BaseRepository {
   }
   async updateCart(userId: string, cartId: string, data: any) {
     return await this.getSubCollectionReference(
-      CollectionsName.user,
+      CollectionsName.users,
       userId,
       CollectionsName.cart
     )
@@ -36,7 +36,7 @@ export class CartRepo extends BaseRepository {
   }
   async getCartById(userId: string, cartId: string) {
     return await this.getSubCollectionReference(
-      CollectionsName.user,
+      CollectionsName.users,
       userId,
       CollectionsName.cart
     )

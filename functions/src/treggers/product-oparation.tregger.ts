@@ -1,5 +1,6 @@
 import * as functions from "firebase-functions";
 import { TriggerController } from "../app/triggers-data/contraller";
+import { CollectionsName } from "../constant/utils-consts/collection";
 
 export const ProductOpartionTrigger = functions
   // .runWith({
@@ -10,7 +11,9 @@ export const ProductOpartionTrigger = functions
   // })
 
   .region("europe-west3")
-  .firestore.document("/productData/{productDataId}")
+  .firestore.document(
+    `/${CollectionsName.productCollects}/{${CollectionsName.productCollects}Id}`
+  )
   .onWrite(async (snapshot, context) => {
     const chatController = new TriggerController();
     return chatController.onWriteProductOparionsTrigger(

@@ -6,14 +6,14 @@ export class ProfileRepo extends BaseRepository {
     try {
       // set in subcollection
       const collection = this.getSubCollectionReference(
-        CollectionsName.user,
+        CollectionsName.users,
         docId,
         CollectionsName.depGameResult
       );
       console.log(docId);
       const depId = results.depId;
       await collection.doc(depId).set(results);
-      const collection2 = this.getCollectionReference(CollectionsName.user);
+      const collection2 = this.getCollectionReference(CollectionsName.users);
       await collection2.doc(docId).update(prfile);
     } catch (error) {
       console.log(error);
@@ -24,7 +24,7 @@ export class ProfileRepo extends BaseRepository {
     try {
       // set in subcollection
 
-      const collection2 = this.getCollectionReference(CollectionsName.user);
+      const collection2 = this.getCollectionReference(CollectionsName.users);
       await collection2.doc(docId).update({ mony });
     } catch (error) {
       console.log(error);
@@ -33,7 +33,7 @@ export class ProfileRepo extends BaseRepository {
 
   //get userDocId
   async getDocData(authId: string) {
-    const user = await this.getCollectionReference(CollectionsName.user)
+    const user = await this.getCollectionReference(CollectionsName.users)
       .where("uid", "==", authId)
       .get();
 
@@ -41,7 +41,7 @@ export class ProfileRepo extends BaseRepository {
   }
 
   async getDoc(docId: string) {
-    const data = await this.getCollectionReference(CollectionsName.user)
+    const data = await this.getCollectionReference(CollectionsName.users)
       .doc(docId)
       .get();
     return data;

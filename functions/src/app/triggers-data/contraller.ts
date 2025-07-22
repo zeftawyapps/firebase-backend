@@ -48,8 +48,13 @@ export class TriggerController {
     return await this;
   }
 
-  async onUsersRulesChangedTrigger(snapshot: any, orderId: string) {
-    // const data = snapshot.after.data();
+  async onUsersRulesChangedTrigger(snapshot: any, userId: string) {
+    const oldUserData = snapshot.before.data();
+    console.log("onUsersRulesChangedTrigger oldUserData", oldUserData, userId);
+
+    const data = snapshot.after.data();
+    console.log("onUsersRulesChangedTrigger", data, userId);
+
     // if (data.status == orderStatus.refunded) {
     //   const productService = new OperationsProductService();
     //   const orderData = data;

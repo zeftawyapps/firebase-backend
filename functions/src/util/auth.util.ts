@@ -2,9 +2,12 @@ import { UnauthorizedException } from "../exception/unauthorized.exception";
 import { Request } from "express";
 
 export class AuthUtil {
-  static async getUserFromToken(
-    token: string
-  ): Promise<{
+  static async getUserFromReq(req: Request) {
+    const token = req.header("authorization") ?? "";
+    return await AuthUtil.getUserFromToken(token!);
+  }
+
+  static async getUserFromToken(token: string): Promise<{
     userId: string;
     email?: string;
     iat: number;
@@ -24,11 +27,6 @@ export class AuthUtil {
       console.log(e);
       throw new UnauthorizedException("errors.unAuthorized");
     }
-  }
-
-  static async getUserFromReq(req: Request) {
-    const token = req.header("authorization") ?? "";
-    return await AuthUtil.getUserFromToken(token!);
   }
 
   private static parseJwt(token: string) {

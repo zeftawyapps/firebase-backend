@@ -3,6 +3,8 @@ import { appExpress } from "./app/init";
 //init app
 require("./app/init");
 // const productTregger = require("./treggers/product.tregger");
+const usersTregger = require("./treggers/users.tregger");
+
 // // export const apiCommerce = functions.region("europe-west3").https.onRequest(userAppExpress);
 // const productOpariton = require("./treggers/product-oparation.tregger");
 
@@ -14,6 +16,6 @@ require("./app/init");
 export const apiCommerce = functions
   .region("europe-west3")
   .https.onRequest(appExpress);
-// export const ProductTrigger = productTregger.ProductTrigger;
+export const UsersTrigger = usersTregger.UsersTrigger;
 // export const ProductOpartionTrigger = productOpariton.ProductOpartionTrigger;
 // export const orderTregger = OrderTrigger.OrderTrigger;

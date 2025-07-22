@@ -1,5 +1,6 @@
 import * as functions from "firebase-functions";
 import { TriggerController } from "../app/triggers-data/contraller";
+import { CollectionsName } from "../constant/utils-consts/collection";
 
 export const OrderTrigger = functions
   // .runWith({
@@ -10,7 +11,7 @@ export const OrderTrigger = functions
   // })
 
   .region("europe-west3")
-  .firestore.document("/order/{orderId}")
+  .firestore.document(`/${CollectionsName.order}/{${CollectionsName.order}Id}`)
   .onWrite(async (snapshot, context) => {
     const orderController = new TriggerController();
     return orderController.onOrderStatusChangedTrigger(
