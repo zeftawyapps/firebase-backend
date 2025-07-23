@@ -1,8 +1,8 @@
 {
-    "projects": {
-        "default": "itcacademyeg",
-        "dev": "itcacademyeg",
-        "prod": "commerce-trial"
-    },
-    "targets": {}
+  "projects": {
+    "default": "itcacademyeg",
+    "dev": "shipping-app-ead85",
+    "prod": "commerce-trial"
+  },
+  "targets": {}
 }
