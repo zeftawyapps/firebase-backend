@@ -7,10 +7,12 @@ export class CollectionsName {
   static productCollects = "productData";
   static productMovement = "productMovement";
   static productBalancer = "productBalancer";
-  static users = "usersAccountData";
+  // static users = "usersAccountData";
+  static users = "usersAccount";
   static drivers = "drivers";
   static shops = "shops";
   static order = "order";
   static orderProducts = "orderProducts";
   static cart = "cart";
+  static locationPoints = "locationPoints";
 }

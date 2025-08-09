@@ -10,13 +10,10 @@ export class DriverRepo extends BaseRepository {
       const docRef = collection.doc(uid); // Use uid as document ID
 
       const drive = new DriverModel({
-        name: driverData.name,
-        id: uid,
-        currentLocation: null,
-        status: DriverStatus.AVAILABLE,
-        rallyPoint: null,
-        lastLocationUpdate: new Date(),
-        rating: 0, // Default rating
+        ...driverData,
+        id: uid, // Use uid as driver ID
+        currentLocation: null, // Default to null
+        // Default rating
       });
 
       await docRef.set({
