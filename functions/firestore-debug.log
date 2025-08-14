@@ -1,4 +1,12 @@
+<<<<<<< HEAD
 Aug 09, 2025 6:01:49 PM com.google.cloud.datastore.emulator.firestore.websocket.WebSocketServer start
+=======
+WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::arrayBaseOffset has been called by com.google.protobuf.UnsafeUtil$MemoryAccessor (file:/Users/moaz/.cache/firebase/emulators/cloud-firestore-emulator-v1.19.8.jar)
+WARNING: Please consider reporting this to the maintainers of class com.google.protobuf.UnsafeUtil$MemoryAccessor
+WARNING: sun.misc.Unsafe::arrayBaseOffset will be removed in a future release
+Aug 14, 2025 6:31:50 PM com.google.cloud.datastore.emulator.firestore.websocket.WebSocketServer start
+>>>>>>> 52700ce (cd)
 INFO: Started WebSocket server on ws://127.0.0.1:9150
 API endpoint: http://127.0.0.1:5002
 If you are using a library that supports the FIRESTORE_EMULATOR_HOST environment variable, run:
@@ -12,6 +20,7 @@ If you are running a Firestore in Datastore Mode project, run:
 Note: Support for Datastore Mode is in preview. If you encounter any bugs please file at https://github.com/firebase/firebase-tools/issues.
 Dev App Server is now running.
 
+<<<<<<< HEAD
 Aug 09, 2025 6:02:02 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
 INFO: Detected non-HTTP/2 connection.
 Aug 09, 2025 6:02:02 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
@@ -83,4 +92,11 @@ INFO: Detected non-HTTP/2 connection.
 Aug 09, 2025 6:03:22 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
 INFO: Detected non-HTTP/2 connection.
 Aug 09, 2025 6:03:25 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+=======
+Aug 14, 2025 6:32:00 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Aug 14, 2025 6:32:00 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+>>>>>>> 52700ce (cd)
 INFO: Detected HTTP/2 connection.
+*** shutting down gRPC server since JVM is shutting down
+*** server shut down
