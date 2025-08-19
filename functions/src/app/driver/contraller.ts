@@ -5,12 +5,43 @@ import { AppUtil } from "../../util/app.util";
 import { DriverService } from "./service";
 import { driverValidation } from "./validation";
 
+/**
+ * @swagger
+ * tags:
+ *   name: Driver
+ *   description: Driver management endpoints
+ */
 export class DriverController {
   service: DriverService;
   constructor() {
     this.service = new DriverService();
   }
 
+  /**
+   * @swagger
+   * /driver:
+   *   post:
+   *     summary: Create a new driver profile
+   *     tags: [Driver]
+   *     security:
+   *       - bearerAuth: []
+   *     requestBody:
+   *       required: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *             type: object
+   *             properties:
+   *               currentLocation:
+   *                 $ref: '#/components/schemas/Location'
+   *               rallyPoint:
+   *                 $ref: '#/components/schemas/Location'
+   *     responses:
+   *       200:
+   *         description: Driver created successfully
+   *       401:
+   *         description: Unauthorized
+   */
   // Create driver profile
   async createDriver(req: any, res: Response, next: NextFunction) {
     try {
@@ -25,6 +56,33 @@ export class DriverController {
     }
   }
 
+  /**
+   * @swagger
+   * /driver/location:
+   *   put:
+   *     summary: Update driver location
+   *     tags: [Driver]
+   *     security:
+   *       - bearerAuth: []
+   *     requestBody:
+   *       required: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *             type: object
+   *             properties:
+   *               latitude:
+   *                 type: number
+   *               longitude:
+   *                 type: number
+   *               address:
+   *                 type: string
+   *     responses:
+   *       200:
+   *         description: Location updated successfully
+   *       401:
+   *         description: Unauthorized
+   */
   // Update driver location
   async updateLocation(req: any, res: Response, next: NextFunction) {
     try {
