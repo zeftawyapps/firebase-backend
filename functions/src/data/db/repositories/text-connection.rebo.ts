@@ -1,3 +1,3 @@
-import { BaseRepository } from "./base.repository";
+import { BaseRepository } from "../../../util/base.repository";
 
-export class TestContrallerFirebase extends BaseRepository{}
+export class TestContrallerFirebase extends BaseRepository {}

@@ -1,5 +1,5 @@
 import { CollectionsName } from "../../constant/utils-consts/collection";
-import { BaseRepository } from "../../data/db/repositories/base.repository";
+import { BaseRepository } from "../../util/base.repository";
 
 export class OrderProductsReposatory extends BaseRepository {
   // update

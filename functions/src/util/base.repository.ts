@@ -1,8 +1,8 @@
-import { firebase } from "../../firebase-datasource";
+import { firebase } from "../data/firebase-datasource";
 import { firestore } from "firebase-admin";
 import CollectionReference = firestore.CollectionReference;
 import DocumentData = firestore.DocumentData;
-import { AppUtil } from "../../../util/app.util";
+import { AppUtil } from "./app.util";
 
 export abstract class BaseRepository {
   private db = firebase.firestore();

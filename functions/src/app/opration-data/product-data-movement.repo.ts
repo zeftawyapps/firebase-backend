@@ -1,5 +1,5 @@
 import { CollectionsName } from "../../constant/utils-consts/collection";
-import { BaseRepository } from "../../data/db/repositories/base.repository";
+import { BaseRepository } from "../../util/base.repository";
 
 export class ProductDataMovementRepo extends BaseRepository {
   async insertProductMovement(id: string, data: any) {
@@ -19,8 +19,7 @@ export class ProductDataMovementRepo extends BaseRepository {
   async loadMovment() {
     const value = await this.getCollectionReference(
       CollectionsName.productMovement
-    )
-    .get();
+    ).get();
     const data = value.docs.map((doc) => doc.data());
     return data;
   }

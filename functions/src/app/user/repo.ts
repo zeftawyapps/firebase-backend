@@ -1,5 +1,5 @@
 import { CollectionsName } from "../../constant/utils-consts/collection";
-import { BaseRepository } from "../../data/db/repositories/base.repository";
+import { BaseRepository } from "../../util/base.repository";
 
 export class ProfileRepo extends BaseRepository {
   async setProfile(docId: string, results: any, prfile: any) {
