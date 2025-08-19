@@ -1,587 +1,492 @@
 {
-	"info": {
-		"_postman_id": "firebase-shipping-app",
-		"name": "Firebase Shipping App API",
-		"description": "Complete API collection for Firebase Shipping App with Shop, Driver, and Location Point management",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-	},
-	"item": [
-		{
-			"name": "Authentication",
-			"item": [
-				{
-					"name": "Get Auth Token",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"password123\"\n}"
-						},
-						"url": {
-							"raw": "{{baseUrl}}/auth/login",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"auth",
-								"login"
-							]
-						},
-						"description": "Login to get JWT token"
-					}
-				}
-			]
-		},
-		{
-			"name": "Shop Management",
-			"item": [
-				{
-					"name": "Create Shop",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "Bearer {{authToken}}"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"name\": \"My Coffee Shop\",\n  \"description\": \"Best coffee in town\",\n  \"location\": {\n    \"latitude\": 40.7128,\n    \"longitude\": -74.0060,\n    \"address\": \"123 Main St, New York, NY\",\n    \"city\": \"New York\",\n    \"country\": \"USA\"\n  },\n  \"address\": \"123 Main St, New York, NY 10001\",\n  \"phone\": \"+1-555-123-4567\"\n}"
-						},
-						"url": {
-							"raw": "{{baseUrl}}/shop",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"shop"
-							]
-						}
-					}
-				},
-				{
-					"name": "Update Shop",
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "Bearer {{authToken}}"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"name\": \"Updated Coffee Shop Name\",\n  \"description\": \"Updated description\",\n  \"address\": \"456 New Address St\",\n  \"phone\": \"+1-555-987-6543\"\n}"
-						},
-						"url": {
-							"raw": "{{baseUrl}}/shop",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"shop"
-							]
-						}
-					}
-				},
-				{
-					"name": "Get Shop by ID",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{authToken}}"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/shop/{{shopId}}",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"shop",
-								"{{shopId}}"
-							]
-						}
-					}
-				},
-				{
-					"name": "Get Shop Profile",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{authToken}}"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/shop/profile",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"shop",
-								"profile"
-							]
-						}
-					}
-				},
-				{
-					"name": "Get All Active Shops",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{authToken}}"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/shops",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"shops"
-							]
-						}
-					}
-				},
-				{
-					"name": "Toggle Shop Status",
-					"request": {
-						"method": "PATCH",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "Bearer {{authToken}}"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"isActive\": true\n}"
-						},
-						"url": {
-							"raw": "{{baseUrl}}/shop/toggle-status",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"shop",
-								"toggle-status"
-							]
-						}
-					}
-				},
-				{
-					"name": "Update Shop Location",
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "Bearer {{authToken}}"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"location\": {\n    \"latitude\": 40.7589,\n    \"longitude\": -73.9851,\n    \"address\": \"Times Square, New York, NY\",\n    \"city\": \"New York\",\n    \"country\": \"USA\"\n  },\n  \"address\": \"Times Square, New York, NY 10036\"\n}"
-						},
-						"url": {
-							"raw": "{{baseUrl}}/shop/location",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"shop",
-								"location"
-							]
-						}
-					}
-				}
-			]
-		},
-		{
-			"name": "Driver Management",
-			"item": [
-				{
-					"name": "Create Driver",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "Bearer {{authToken}}"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"currentLocation\": {\n    \"latitude\": 40.7128,\n    \"longitude\": -74.0060,\n    \"address\": \"123 Driver St, New York, NY\"\n  },\n  \"rallyPoint\": {\n    \"latitude\": 40.7589,\n    \"longitude\": -73.9851,\n    \"address\": \"Times Square, New York, NY\"\n  }\n}"
-						},
-						"url": {
-							"raw": "{{baseUrl}}/driver",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"driver"
-							]
-						}
-					}
-				},
-				{
-					"name": "Get Driver Profile",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{authToken}}"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/driver/profile",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"driver",
-								"profile"
-							]
-						}
-					}
-				},
-				{
-					"name": "Update Driver Location",
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "Bearer {{authToken}}"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"latitude\": 40.7831,\n  \"longitude\": -73.9712,\n  \"address\": \"Central Park, New York, NY\"\n}"
-						},
-						"url": {
-							"raw": "{{baseUrl}}/driver/location",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"driver",
-								"location"
-							]
-						}
-					}
-				},
-				{
-					"name": "Update Driver Status",
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "Bearer {{authToken}}"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"status\": \"available\"\n}"
-						},
-						"url": {
-							"raw": "{{baseUrl}}/driver/status",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"driver",
-								"status"
-							]
-						}
-					}
-				},
-				{
-					"name": "Set Rally Point",
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "Bearer {{authToken}}"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"rallyPoint\": {\n    \"latitude\": 40.7505,\n    \"longitude\": -73.9934,\n    \"address\": \"Penn Station, New York, NY\"\n  }\n}"
-						},
-						"url": {
-							"raw": "{{baseUrl}}/driver/rally-point",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"driver",
-								"rally-point"
-							]
-						}
-					}
-				},
-				{
-					"name": "Update Driver Rating",
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "Bearer {{authToken}}"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"driverId\": \"{{driverId}}\",\n  \"rating\": 4.8\n}"
-						},
-						"url": {
-							"raw": "{{baseUrl}}/driver/rating",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"driver",
-								"rating"
-							]
-						}
-					}
-				}
-			]
-		},
-		{
-			"name": "Location Points",
-			"item": [
-				{
-					"name": "Update Location Point",
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "Bearer {{authToken}}"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"name\": \"Updated Location Point\",\n  \"description\": \"Updated description\",\n  \"location\": {\n    \"latitude\": 40.7128,\n    \"longitude\": -74.0060,\n    \"address\": \"Updated Address\",\n    \"city\": \"New York\",\n    \"country\": \"USA\"\n  },\n  \"isActive\": true\n}"
-						},
-						"url": {
-							"raw": "{{baseUrl}}/location-point/{{locationPointId}}",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"location-point",
-								"{{locationPointId}}"
-							]
-						}
-					}
-				},
-				{
-					"name": "Update Driver Location",
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "Bearer {{authToken}}"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"latitude\": 40.7831,\n  \"longitude\": -73.9712,\n  \"address\": \"Central Park, New York, NY\",\n  \"status\": \"available\"\n}"
-						},
-						"url": {
-							"raw": "{{baseUrl}}/location-point/driver/{{driverId}}",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"location-point",
-								"driver",
-								"{{driverId}}"
-							]
-						}
-					}
-				},
-				{
-					"name": "Update Order Status",
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "Bearer {{authToken}}"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"orderId\": \"{{orderId}}\",\n  \"newStatus\": \"delivered\"\n}"
-						},
-						"url": {
-							"raw": "{{baseUrl}}/location-point/order/status",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"location-point",
-								"order",
-								"status"
-							]
-						}
-					}
-				}
-			]
-		},
-		{
-			"name": "Landing Pages",
-			"item": [
-				{
-					"name": "Get Landing Page",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{authToken}}"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/landingPage",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"landingPage"
-							]
-						}
-					}
-				},
-				{
-					"name": "Get Dashboard",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{authToken}}"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/dashboard",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"dashboard"
-							]
-						}
-					}
-				}
-			]
-		}
-	],
-	"auth": {
-		"type": "bearer",
-		"bearer": [
-			{
-				"key": "token",
-				"value": "{{authToken}}",
-				"type": "string"
-			}
-		]
-	},
-	"event": [
-		{
-			"listen": "prerequest",
-			"script": {
-				"type": "text/javascript",
-				"exec": [
-					""
-				]
-			}
-		},
-		{
-			"listen": "test",
-			"script": {
-				"type": "text/javascript",
-				"exec": [
-					""
-				]
-			}
-		}
-	],
-	"variable": [
-		{
-			"key": "baseUrl",
-			"value": "http://localhost:5001/firebase-backend/us-central1/app",
-			"type": "string"
-		}
-	]
+  "info": {
+    "_postman_id": "firebase-shipping-app",
+    "name": "Firebase Shipping App API",
+    "description": "Complete API collection for Firebase Shipping App with Shop, Driver, and Location Point management",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Get Auth Token",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            },
+            "description": "Login to get JWT token"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Shop Management",
+      "item": [
+        {
+          "name": "Create Shop",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"My Coffee Shop\",\n  \"description\": \"Best coffee in town\",\n  \"location\": {\n    \"latitude\": 40.7128,\n    \"longitude\": -74.0060,\n    \"address\": \"123 Main St, New York, NY\",\n    \"city\": \"New York\",\n    \"country\": \"USA\"\n  },\n  \"address\": \"123 Main St, New York, NY 10001\",\n  \"phone\": \"+1-555-123-4567\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/shop",
+              "host": ["{{baseUrl}}"],
+              "path": ["shop"]
+            }
+          }
+        },
+        {
+          "name": "Update Shop",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Updated Coffee Shop Name\",\n  \"description\": \"Updated description\",\n  \"address\": \"456 New Address St\",\n  \"phone\": \"+1-555-987-6543\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/shop",
+              "host": ["{{baseUrl}}"],
+              "path": ["shop"]
+            }
+          }
+        },
+        {
+          "name": "Get Shop by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/shop/{{shopId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["shop", "{{shopId}}"]
+            }
+          }
+        },
+        {
+          "name": "Get Shop Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/shop/profile",
+              "host": ["{{baseUrl}}"],
+              "path": ["shop", "profile"]
+            }
+          }
+        },
+        {
+          "name": "Get All Active Shops",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/shops",
+              "host": ["{{baseUrl}}"],
+              "path": ["shops"]
+            }
+          }
+        },
+        {
+          "name": "Toggle Shop Status",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"isActive\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/shop/toggle-status",
+              "host": ["{{baseUrl}}"],
+              "path": ["shop", "toggle-status"]
+            }
+          }
+        },
+        {
+          "name": "Update Shop Location",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"location\": {\n    \"latitude\": 40.7589,\n    \"longitude\": -73.9851,\n    \"address\": \"Times Square, New York, NY\",\n    \"city\": \"New York\",\n    \"country\": \"USA\"\n  },\n  \"address\": \"Times Square, New York, NY 10036\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/shop/location",
+              "host": ["{{baseUrl}}"],
+              "path": ["shop", "location"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Driver Management",
+      "item": [
+        {
+          "name": "Create Driver",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"currentLocation\": {\n    \"latitude\": 40.7128,\n    \"longitude\": -74.0060,\n    \"address\": \"123 Driver St, New York, NY\"\n  },\n  \"rallyPoint\": {\n    \"latitude\": 40.7589,\n    \"longitude\": -73.9851,\n    \"address\": \"Times Square, New York, NY\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/driver",
+              "host": ["{{baseUrl}}"],
+              "path": ["driver"]
+            }
+          }
+        },
+        {
+          "name": "Get Driver Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/driver/profile",
+              "host": ["{{baseUrl}}"],
+              "path": ["driver", "profile"]
+            }
+          }
+        },
+        {
+          "name": "Update Driver Location",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"latitude\": 40.7831,\n  \"longitude\": -73.9712,\n  \"address\": \"Central Park, New York, NY\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/driver/location",
+              "host": ["{{baseUrl}}"],
+              "path": ["driver", "location"]
+            }
+          }
+        },
+        {
+          "name": "Update Driver Status",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"available\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/driver/status",
+              "host": ["{{baseUrl}}"],
+              "path": ["driver", "status"]
+            }
+          }
+        },
+        {
+          "name": "Set Rally Point",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"rallyPoint\": {\n    \"latitude\": 40.7505,\n    \"longitude\": -73.9934,\n    \"address\": \"Penn Station, New York, NY\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/driver/rally-point",
+              "host": ["{{baseUrl}}"],
+              "path": ["driver", "rally-point"]
+            }
+          }
+        },
+        {
+          "name": "Update Driver Rating",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"driverId\": \"{{driverId}}\",\n  \"rating\": 4.8\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/driver/rating",
+              "host": ["{{baseUrl}}"],
+              "path": ["driver", "rating"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Location Points",
+      "item": [
+        {
+          "name": "Update Location Point",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Updated Location Point\",\n  \"description\": \"Updated description\",\n  \"location\": {\n    \"latitude\": 40.7128,\n    \"longitude\": -74.0060,\n    \"address\": \"Updated Address\",\n    \"city\": \"New York\",\n    \"country\": \"USA\"\n  },\n  \"isActive\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/location-point/{{locationPointId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["location-point", "{{locationPointId}}"]
+            }
+          }
+        },
+        {
+          "name": "Update Driver Location",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"latitude\": 40.7831,\n  \"longitude\": -73.9712,\n  \"address\": \"Central Park, New York, NY\",\n  \"status\": \"available\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/location-point/driver/{{driverId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["location-point", "driver", "{{driverId}}"]
+            }
+          }
+        },
+        {
+          "name": "Update Order Status",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"orderId\": \"{{orderId}}\",\n  \"newStatus\": \"delivered\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/location-point/order/status",
+              "host": ["{{baseUrl}}"],
+              "path": ["location-point", "order", "status"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Landing Pages",
+      "item": [
+        {
+          "name": "Get Landing Page",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/landingPage",
+              "host": ["{{baseUrl}}"],
+              "path": ["landingPage"]
+            }
+          }
+        },
+        {
+          "name": "Get Dashboard",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/dashboard",
+              "host": ["{{baseUrl}}"],
+              "path": ["dashboard"]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{authToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [""]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [""]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5001/firebase-backend/us-central1/app",
+      "type": "string"
+    }
+  ]
 }

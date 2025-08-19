@@ -9,9 +9,7 @@ export const shopValidation = {
       longitude: Joi.number().required(),
       address: Joi.string().optional(),
     }).required(),
-    phone: Joi.string()
-      .pattern(/^[+]?[0-9]{10,15}$/)
-      .required(),
+    phone: Joi.string().min(10),
     email: Joi.string().email().required(),
   }),
 
