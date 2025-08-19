@@ -59,7 +59,7 @@ export class TriggerController {
 
   // on shop created
   async onShopCreatedTrigger(snapshot: any, shopId: string) {
-    const data = snapshot.after.data();
+    const data = snapshot.data();
 
     console.log("onShopCreatedTrigger", data, shopId);
 
@@ -161,7 +161,7 @@ export class TriggerController {
 
   // on shop deleted
   async onShopDeletedTrigger(snapshot: any, shopId: string) {
-    const data = snapshot.before.data();
+    const data = snapshot.data();
 
     console.log("onShopDeletedTrigger", data, shopId);
 
