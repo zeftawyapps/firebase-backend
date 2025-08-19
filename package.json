@@ -6,6 +6,20 @@
     "@google-cloud/storage": "^5.19.0"
   },
   "scripts": {
-    "goToFunctions": "cd functions"
+    "goToFunctions": "cd functions",
+     "build": "cd functions && tsc",
+        "serve": "cd functions && npm run build && firebase emulators:start",
+        "serveStord": "cd functions && npm run build && firebase emulators:start --import ./data",
+        "shell": "cd functions && npm run build && firebase functions:shell",
+        "start": "cd functions && npm run shell",
+        "pubsub": "cd functions && npm run build && firebase emulators:start --only pubsub",
+        "export": "cd functions && firebase emulators:export ./emulator-data",
+        "deploy": "cd functions && firebase deploy --only functions",
+        "logs": "cd functions && firebase functions:log",
+        "functions": "cd functions && npm run build && firebase emulators:start --only functions",
+        "firestore": "cd functions && firebase emulators:start --only firestore --import=./emulator-data",
+        "watch": "cd functions && nodemon -e ts --exec \"npm run functions\"",
+        "postbuild": "cd functions && cpy ./src/storage/** ./lib/storage/",
+        "lint": "cd functions && eslint --fix --ext .js,.jsx ."
   }
 }
