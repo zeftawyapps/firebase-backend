@@ -1,5 +1,5 @@
 import { LocationPointRepo } from "./repo";
-import { LocationPoint, LocationType, Location } from "../../data/db/model";
+import { LocationPoint, LocationType, Location } from "../../data_moleds";
 
 export class LocationPointService {
   private locationPointRepo: LocationPointRepo;

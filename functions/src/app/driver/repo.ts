@@ -1,6 +1,6 @@
 import { CollectionsName } from "../../constant/utils-consts/collection";
 import { BaseRepository } from "../../data/db/repositories/base.repository";
-import { DriverModel, DriverStatus } from "../../data/db/model";
+import { DriverModel, DriverStatus } from "../../data_moleds";
 
 export class DriverRepo extends BaseRepository {
   // Create driver profile

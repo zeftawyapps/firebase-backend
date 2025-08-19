@@ -1,6 +1,6 @@
 import { CollectionsName } from "../../constant/utils-consts/collection";
 import { BaseRepository } from "../../data/db/repositories/base.repository";
-import { ShopModel } from "../../data/db/model";
+import { ShopModel } from "../../data_moleds";
 
 export class ShopRepo extends BaseRepository {
   // Create shop profile

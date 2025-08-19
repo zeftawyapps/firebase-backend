@@ -1,5 +1,5 @@
 import { DriverRepo } from "./repo";
-import { DriverModel, DriverStatus } from "../../data/db/model";
+import { DriverModel, DriverStatus } from "../../data_moleds";
 
 export class DriverService {
   driverRepo: DriverRepo;

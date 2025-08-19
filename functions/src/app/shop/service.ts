@@ -1,4 +1,4 @@
-import { ShopModel } from "../../data/db/model";
+import { ShopModel } from "../../data_moleds";
 import { ShopRepo } from "./repo";
 
 export class ShopService {

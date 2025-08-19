@@ -3,7 +3,7 @@ import { LocationPointService } from "./service";
 import { AppUtil } from "../../util/app.util";
 import { ResponseUtil } from "../../util/response.util";
 import { locationPointValidation } from "./validation";
-import { LocationType } from "../../data/db/model";
+import { LocationType } from "../../data_moleds";
 
 export class LocationPointController {
   private locationPointService: LocationPointService;

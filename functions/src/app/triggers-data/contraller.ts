@@ -9,7 +9,7 @@ import {
   DriverStatus,
   ShopModel,
   UserRole,
-} from "../../data/db/model";
+} from "../../data_moleds";
 
 export class TriggerController {
   async onWriteProductTrigger(snapshot: any, catId: string, productId: string) {

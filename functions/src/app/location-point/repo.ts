@@ -1,6 +1,6 @@
 import { CollectionsName } from "../../constant/utils-consts/collection";
 import { BaseRepository } from "../../data/db/repositories/base.repository";
-import { LocationPoint, LocationType } from "../../data/db/model";
+import { LocationPoint, LocationType } from "../../data_moleds";
 
 export class LocationPointRepo extends BaseRepository {
   // Create a new location point
