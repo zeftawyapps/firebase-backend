@@ -4,6 +4,7 @@ import { ResponseUtil } from "../../util/response.util";
 import { AppUtil } from "../../util/app.util";
 import { ShopService } from "./service";
 import { shopValidation } from "./validation";
+import { LocationPointService } from "../location-point/service";
 
 /**
  * @swagger
@@ -234,6 +235,47 @@ export class ShopController {
       const body = AppUtil.validate(data, shopValidation.updateLocation);
       await this.service.updateShopLocation(uid, body.location, body.address);
       ResponseUtil.sendResponse(req, res, "Shop location updated successfully");
+    } catch (e) {
+      ResponseUtil.sendException(req, res, e);
+      next(e);
+    }
+  }
+
+  async updateShopOnLogIn(req: any, res: Response, next: NextFunction) {
+    try {
+      const data = req.body;
+      const uid = req.user.userId;
+      const body = AppUtil.validate(data, shopValidation.updateShopLogin);
+      await this.service.updateShopOnLogIn(uid, body);
+
+      // Retrieve updated shop data
+      const updatedShop: any = await this.service.getShopById(uid);
+      console.log(updatedShop);
+      // Update or set location point
+      const dataLocaiotn = {
+        id: updatedShop.id,
+        name: updatedShop.name,
+        location: updatedShop.location,
+        address: updatedShop.address,
+        phone: updatedShop.phone,
+        isActive: updatedShop.isActive,
+        notificationToken: updatedShop.notificationToken,
+      };
+      const locationPointService = new LocationPointService();
+      await locationPointService.createShopLocationPoint({
+        shopId: dataLocaiotn.id,
+        shopName: dataLocaiotn.name,
+        location: dataLocaiotn.location || {
+          latitude: 30,
+          longitude: 30,
+          address: dataLocaiotn.address || "No Address",
+        },
+        address: dataLocaiotn.address || "No Address",
+        phone: dataLocaiotn.phone || "No Phone",
+        isActive: dataLocaiotn.isActive !== undefined ? data.isActive : true,
+      });
+
+      ResponseUtil.sendResponse(req, res, "Shop updated successfully");
     } catch (e) {
       ResponseUtil.sendException(req, res, e);
       next(e);

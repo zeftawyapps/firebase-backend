@@ -26,6 +26,10 @@ export const driverValidation = {
       .required(),
   }),
 
+  updateDriverLogin: Joi.object({
+    notificationToken: Joi.string().required(),
+  }),
+
   setRallyPoint: Joi.object({
     rallyPoint: Joi.object({
       latitude: Joi.number().required(),

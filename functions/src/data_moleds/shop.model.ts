@@ -9,6 +9,7 @@ export interface Shop {
   phone: string;
   email: string;
   createdAt: Date;
+  notificationToken?: string;
   isActive: boolean;
 }
 
@@ -21,6 +22,7 @@ export class ShopModel {
   phone: string;
   email: string;
   createdAt: Date;
+  notificationToken?: string;
   isActive: boolean;
 
   constructor(data: Shop) {
@@ -33,6 +35,7 @@ export class ShopModel {
     this.email = data.email;
     this.createdAt = data.createdAt;
     this.isActive = data.isActive;
+    this.notificationToken = data.notificationToken;
   }
 
   toJson(): any {
@@ -44,6 +47,7 @@ export class ShopModel {
       location: null,
       phone: this.phone,
       email: this.email,
+      notificationToken: this.notificationToken,
       createdAt: this.createdAt.toISOString(),
       isActive: this.isActive,
     };
@@ -58,6 +62,7 @@ export class ShopModel {
       location: null,
       phone: json.phone,
       email: json.email,
+      notificationToken: json.notificationToken,
       createdAt: new Date(json.createdAt),
       isActive: json.isActive,
     });
@@ -73,6 +78,7 @@ export class ShopModel {
       location: null,
       phone: data.phone,
       email: data.email,
+      notificationToken: data.notificationToken,
       createdAt: data.createdAt.toDate(),
       isActive: data.isActive,
     });

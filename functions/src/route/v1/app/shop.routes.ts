@@ -31,9 +31,13 @@ export default function (app: Application) {
   });
 
   // Get shop by ID
-  app.get("/shop/:shopId", userAuthMiddleware, (req, res, next: NextFunction) => {
-    return shopController.getShopById(req, res, next);
-  });
+  app.get(
+    "/shop/:shopId",
+    userAuthMiddleware,
+    (req, res, next: NextFunction) => {
+      return shopController.getShopById(req, res, next);
+    }
+  );
 
   // Get all active shops
   app.get("/shops", userAuthMiddleware, (req, res, next: NextFunction) => {
@@ -45,18 +49,34 @@ export default function (app: Application) {
     return shopController.updateShop(req, res, next);
   });
 
-  // Get shop profile (for current user)
-  app.get("/shop/profile", userAuthMiddleware, (req, res, next: NextFunction) => {
-    return shopController.getShopProfile(req, res, next);
+  app.put("/shopLogin", userAuthMiddleware, (req, res, next: NextFunction) => {
+    return shopController.updateShopOnLogIn(req, res, next);
   });
+
+  // Get shop profile (for current user)
+  app.get(
+    "/shop/profile",
+    userAuthMiddleware,
+    (req, res, next: NextFunction) => {
+      return shopController.getShopProfile(req, res, next);
+    }
+  );
 
   // Toggle shop status
-  app.patch("/shop/toggle-status", userAuthMiddleware, (req, res, next: NextFunction) => {
-    return shopController.toggleShopStatus(req, res, next);
-  });
+  app.patch(
+    "/shop/toggle-status",
+    userAuthMiddleware,
+    (req, res, next: NextFunction) => {
+      return shopController.toggleShopStatus(req, res, next);
+    }
+  );
 
   // Update shop location
-  app.put("/shop/location", userAuthMiddleware, (req, res, next: NextFunction) => {
-    return shopController.updateShopLocation(req, res, next);
-  });
+  app.put(
+    "/shop/location",
+    userAuthMiddleware,
+    (req, res, next: NextFunction) => {
+      return shopController.updateShopLocation(req, res, next);
+    }
+  );
 }

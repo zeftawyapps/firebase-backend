@@ -9,13 +9,13 @@ export class LocationPointRepo extends BaseRepository {
     locationPoint: LocationPoint
   ): Promise<string> {
     try {
-      const collection = this.getCollectionReference(
-        CollectionsName.locationPoints
-      );
-      const docRef = collection.doc(id);
-
-      await docRef.set(locationPoint.toJson());
-      return docRef.id;
+      const mydata = locationPoint.toJson();
+      // Fix: Ensure location.address is not undefined
+      if (mydata.location && typeof mydata.location.address === "undefined") {
+        mydata.location.address = "";
+      }
+      await this.insertById(CollectionsName.locationPoints, id, mydata);
+      return id;
     } catch (error) {
       console.error("Error creating location point:", error);
       throw error;
@@ -51,7 +51,13 @@ export class LocationPointRepo extends BaseRepository {
         ...data,
         lastUpdated: new Date().toISOString(),
       };
-
+      // Fix: Ensure location.address is not undefined
+      if (
+        updateData.location &&
+        typeof updateData.location.address === "undefined"
+      ) {
+        updateData.location.address = "";
+      }
       await this.update(CollectionsName.locationPoints, id, updateData);
     } catch (error) {
       console.error("Error updating location point:", error);

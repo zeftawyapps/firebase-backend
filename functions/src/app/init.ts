@@ -8,9 +8,16 @@ import { ResponseUtil } from "../util/response.util";
 import { ApiStatusCodeConst } from "../constant/utils-consts/api-status-code.const";
 import { HttpStatusCodeConst } from "../constant/utils-consts/http-status-code.const";
 import appV1Routes from "../route/v1/app";
-
 const cors = require("cors");
-export const FirebaseApp = admin.initializeApp();
+
+const serviceAccount = require("./admin.json");
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+});
+
+export const FirebaseApp = admin;
+
 // 2- init express app.
 export const dashboardExpress: Application = express();
 export const appExpress: Application = express();

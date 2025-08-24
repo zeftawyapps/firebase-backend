@@ -15,10 +15,12 @@ export const shopValidation = {
 
   updateShop: Joi.object({
     name: Joi.string().min(2).max(100).optional(),
-    phone: Joi.string()
-      .pattern(/^[+]?[0-9]{10,15}$/)
-      .optional(),
+    phone: Joi.string().min(10).optional(),
     email: Joi.string().email().optional(),
+  }),
+
+  updateShopLogin: Joi.object({
+    notificationToken: Joi.string().required(),
   }),
 
   updateLocation: Joi.object({

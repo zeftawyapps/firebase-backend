@@ -12,7 +12,9 @@ export class DriverService {
   async createDriver(uid: string, driverData: DriverModel): Promise<string> {
     return await this.driverRepo.createDriver(uid, driverData);
   }
-
+  async updateDriverOnLogIn(uid: string, driverData: any) {
+    await this.driverRepo.updateDriverLogIn(uid, driverData);
+  }
   // Update driver location
   async updateLocation(uid: string, location: any) {
     await this.driverRepo.updateLocation(uid, location);
@@ -26,6 +28,10 @@ export class DriverService {
   // Get driver profile
   async getDriverProfile(uid: string) {
     return await this.driverRepo.getDriverProfile(uid);
+  }
+
+  async getDriverById(uid: string) {
+    return await this.driverRepo.getDriverById(uid);
   }
 
   // Get nearby drivers

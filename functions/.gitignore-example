@@ -1,0 +1,19 @@
+# Add this to your .gitignore file to protect your service account credentials
+
+# Firebase Service Account (NEVER COMMIT THIS!)
+src/config/admin.json
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Firebase emulator data
+emulator-data/
+*-debug.log
+
+# Build outputs
+lib/
+
+# Dependencies
+node_modules/

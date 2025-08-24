@@ -1,5 +1,7 @@
+// import { User } from "../../data_moleds";
 import { DepRepo } from "../main-data/dep/dep-repo";
 import { ProfileRepo } from "./repo";
+// import { userValidation } from "./validation";
 
 export class ProfileService {
   prfileRepo: ProfileRepo;
@@ -42,5 +44,27 @@ export class ProfileService {
     profmony = profmony + mony;
 
     await this.prfileRepo.setMony(doc.id, profmony);
+  }
+
+  async createAccount(data: any) {
+    // Save user to database
+    const userId = await this.prfileRepo.createAccount(data);
+    return { userId, ...data };
+  }
+
+  async login(data: any) {
+    // const { error, value } = userValidation.login.validate(data);
+    // if (error) throw error;
+    // Get user by email
+    // const userDoc = await this.prfileRepo.getUserByEmail(value.email);
+    // const userData = userDoc.data();
+    // TODO: Add password verification here
+    // For now, just return success
+    // Update login status
+    //   await this.prfileRepo.updateLoginStatus(userData.uid, false);
+    //   return {
+    //     message: "Login successful",
+    //     user: userData,
+    //   };
   }
 }

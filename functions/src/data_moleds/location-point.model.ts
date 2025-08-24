@@ -114,9 +114,9 @@ export class LocationPoint {
       type: LocationType.SHOP,
       entityId: data.shopId,
       metadata: {
-        address: data.address,
+        address: data.address || "No Address",
         phone: data.phone,
-        isActive: data.isActive,
+        isActive: data.isActive ? data.isActive : true,
       },
       lastUpdated: new Date(),
       isActive: data.isActive !== undefined ? data.isActive : true,

@@ -4,6 +4,38 @@ import { ResponseUtil } from "../../util/response.util";
 import { AppUtil } from "../../util/app.util";
 import { DriverService } from "./service";
 import { driverValidation } from "./validation";
+import { LocationPointService } from "../location-point/service";
+// Update driver on login (similar to shop)
+// async updateDriverOnLogIn(req: any, res: Response, next: NextFunction) {
+//   try {
+//     const data = req.body;
+//     const uid = req.user.userId;
+//     // Use updateDriverLogin validation if exists, else fallback to updateStatus
+//     const validationSchema = driverValidation.updateDriverLogin || driverValidation.updateStatus;
+//     const body = AppUtil.validate(data, validationSchema);
+//     await this.service.updateDriver(uid, body);
+
+//     // Retrieve updated driver data
+//     const updatedDriver = await this.service.getDriverProfile(uid);
+
+//     // Update or set location point
+//     const { id, name, currentLocation, phone, status, rating } = updatedDriver;
+//     const locationPointService = new LocationPointService();
+//     await locationPointService.createDriverLocationPoint({
+//       driverId: id,
+//       driverName: name,
+//       location: currentLocation || { latitude: 30, longitude: 30, address: "No Address" },
+//       phone: phone || "No Phone",
+//       status: status,
+//       rating: rating || 0,
+//     });
+
+//     ResponseUtil.sendResponse(req, res, "Driver updated successfully");
+//   } catch (e) {
+//     ResponseUtil.sendException(req, res, e);
+//     next(e);
+//   }
+// }
 
 /**
  * @swagger
@@ -15,6 +47,40 @@ export class DriverController {
   service: DriverService;
   constructor() {
     this.service = new DriverService();
+  }
+
+  async updateDriverOnLogIn(req: any, res: Response, next: NextFunction) {
+    try {
+      const data = req.body;
+      const uid = req.user.userId;
+      // Fallback to updateStatus if updateDriverLogin does not exist
+      const body = AppUtil.validate(data, driverValidation.updateDriverLogin);
+      await this.service.updateDriverOnLogIn(uid, body.notificationToken);
+
+      // Retrieve updated driver data
+      const updatedDriver: any = await this.service.getDriverById(uid);
+
+      // Update or set location point
+
+      const locationPointService = new LocationPointService();
+      await locationPointService.createDriverLocationPoint({
+        driverId: updatedDriver.id,
+        driverName: updatedDriver.name,
+        location: updatedDriver.currentLocation || {
+          latitude: 30,
+          longitude: 30,
+          address: "No Address",
+        },
+        phone: updatedDriver.phone || "No Phone",
+        status: updatedDriver.status,
+        rating: updatedDriver.rating || 0,
+      });
+
+      ResponseUtil.sendResponse(req, res, "Driver updated successfully");
+    } catch (e) {
+      ResponseUtil.sendException(req, res, e);
+      next(e);
+    }
   }
 
   /**

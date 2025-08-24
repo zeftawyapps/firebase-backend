@@ -19,6 +19,9 @@ export class ShopService {
   async updateShop(uid: string, shopData: any) {
     await this.shopRepo.updateShop(uid, shopData);
   }
+  async updateShopOnLogIn(uid: string, shopData: any) {
+    await this.shopRepo.updateShopLogIn(uid, shopData);
+  }
 
   // Get shop profile
   async getShopProfile(uid: string) {
@@ -53,14 +56,14 @@ export class ShopService {
   // Additional business logic methods
 
   // Check if shop is active and accepting orders
-  async isShopAcceptingOrders(shopId: string): Promise<boolean> {
-    try {
-      const shop = await this.shopRepo.getShopById(shopId);
-      return shop.isActive;
-    } catch (error) {
-      return false;
-    }
-  }
+  // async isShopAcceptingOrders(shopId: string): Promise<boolean> {
+  //   try {
+  //     const shop = await this.shopRepo.getShopById(shopId);
+  //     return shop.isActive;
+  //   } catch (error) {
+  //     return false;
+  //   }
+  // }
 
   // Get shop statistics
   async getShopStats(uid: string) {

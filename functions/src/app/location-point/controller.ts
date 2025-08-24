@@ -15,14 +15,13 @@ export class LocationPointController {
   // Create a new location point
   async createLocationPoint(req: Request, res: Response, next: NextFunction) {
     try {
-      const body = req.body;
-      const data = AppUtil.validate(body, locationPointValidation.create);
-
-      const result = await this.locationPointService.createLocationPoint(data);
-      ResponseUtil.sendResponse(req, res, {
-        id: result,
-        message: "Location point created successfully",
-      });
+      // const body = req.body;
+      // const data = AppUtil.validate(body, locationPointValidation.create);
+      // // const result = await this.locationPointService.createLocationPoint(data);
+      // ResponseUtil.sendResponse(req, res, {
+      //   id: result,
+      //   message: "Location point created successfully",
+      // });
     } catch (error) {
       ResponseUtil.sendException(req, res, error);
       next(error);

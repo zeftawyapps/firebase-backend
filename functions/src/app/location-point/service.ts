@@ -9,10 +9,13 @@ export class LocationPointService {
   }
 
   // Create location point
-  async createLocationPoint(locationPoint: LocationPoint): Promise<string> {
+  async createLocationPoint(
+    id: string,
+    locationPoint: LocationPoint
+  ): Promise<string> {
     try {
       return await this.locationPointRepo.createLocationPoint(
-        locationPoint.locationId,
+        id,
         locationPoint
       );
     } catch (error) {
@@ -113,7 +116,7 @@ export class LocationPointService {
   }): Promise<string> {
     try {
       const locationPoint = LocationPoint.fromDriver(data);
-      return await this.createLocationPoint(locationPoint);
+      return await this.createLocationPoint(data.driverId, locationPoint);
     } catch (error) {
       console.error("Error in service creating driver location point:", error);
       throw error;
@@ -127,11 +130,12 @@ export class LocationPointService {
     location: Location;
     address?: string;
     phone?: string;
+    notificationToken?: string;
     isActive?: boolean;
   }): Promise<string> {
     try {
       const locationPoint = LocationPoint.fromShop(data);
-      return await this.createLocationPoint(locationPoint);
+      return await this.createLocationPoint(data.shopId, locationPoint);
     } catch (error) {
       console.error("Error in service creating shop location point:", error);
       throw error;
@@ -149,7 +153,7 @@ export class LocationPointService {
   }): Promise<string> {
     try {
       const locationPoint = LocationPoint.fromOrderPickup(data);
-      return await this.createLocationPoint(locationPoint);
+      return await this.createLocationPoint(data.orderId, locationPoint);
     } catch (error) {
       console.error(
         "Error in service creating order pickup location point:",
@@ -171,7 +175,7 @@ export class LocationPointService {
   }): Promise<string> {
     try {
       const locationPoint = LocationPoint.fromOrderDelivery(data);
-      return await this.createLocationPoint(locationPoint);
+      return await this.createLocationPoint(data.orderId, locationPoint);
     } catch (error) {
       console.error(
         "Error in service creating order delivery location point:",

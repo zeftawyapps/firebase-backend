@@ -55,6 +55,21 @@ export class ShopRepo extends BaseRepository {
     }
   }
 
+  async updateShopLogIn(uid: string, shopData: any) {
+    try {
+      const shopDoc = await this.getShopByUid(uid);
+      if (!shopDoc.exists) {
+        throw new Error("Shop not found");
+      }
+      this.update(CollectionsName.shops, shopDoc.id, {
+        notificationToken: shopData.notificationToken,
+      });
+    } catch (error) {
+      console.log("Error updating shop:", error);
+      throw error;
+    }
+  }
+
   // Get shop by uid
   async getShopByUid(uid: string) {
     const shops = await this.getCollectionReference(CollectionsName.shops)
@@ -82,15 +97,19 @@ export class ShopRepo extends BaseRepository {
   // Get shop by ID
   async getShopById(shopId: string) {
     try {
-      const shopDoc = await this.getCollectionReference(CollectionsName.shops)
-        .doc(shopId)
-        .get();
+      // const shopDoc = await this.getCollectionReference(CollectionsName.shops)
+      //   .doc(shopId)
+      //   .get();
 
-      if (!shopDoc.exists) {
-        throw new Error("Shop not found");
-      }
-
-      return ShopModel.fromFirestore(shopDoc);
+      // if (!shopDoc.exists) {
+      //   throw new Error("Shop not found");
+      // }
+      const shop = await this.getDocumentReference(
+        CollectionsName.shops,
+        shopId
+      ).get();
+      const data = shop.data();
+      return data;
     } catch (error) {
       console.log("Error getting shop by ID:", error);
       throw error;

@@ -66,6 +66,20 @@ export class DriverRepo extends BaseRepository {
     }
   }
 
+  async getDriverById(driverId: string) {
+    try {
+      const driverDoc = await this.getDocumentReference(
+        CollectionsName.drivers,
+        driverId
+      ).get();
+      const data = driverDoc.data();
+      return data;
+    } catch (error) {
+      console.log("Error getting driver by ID:", error);
+      throw error;
+    }
+  }
+
   // Get driver by uid
   async getDriverByUid(uid: string) {
     const drivers = await this.getCollectionReference(CollectionsName.drivers)
@@ -145,6 +159,21 @@ export class DriverRepo extends BaseRepository {
       });
     } catch (error) {
       console.log("Error updating rating:", error);
+      throw error;
+    }
+  }
+
+  async updateDriverLogIn(uid: string, driverData: any) {
+    try {
+      const driverDoc = await this.getDriverByUid(uid);
+      if (!driverDoc.exists) {
+        throw new Error("Driver not found");
+      }
+      await this.update(CollectionsName.drivers, driverDoc.id, {
+        notificationToken: driverData,
+      });
+    } catch (error) {
+      console.log("Error updating driver login:", error);
       throw error;
     }
   }
