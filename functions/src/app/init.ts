@@ -3,6 +3,7 @@ import { Application, NextFunction, Request, Response } from "express";
 import * as admin from "firebase-admin";
 import * as functions from "firebase-functions";
 import dashboardV1Routes from "../route/v1/dashboard";
+import testingV1Routes from "../route/v1/testing";
 import express = require("express");
 import { ResponseUtil } from "../util/response.util";
 import { ApiStatusCodeConst } from "../constant/utils-consts/api-status-code.const";
@@ -30,6 +31,7 @@ function expressInit(expressApp: Application) {
   // handle all app errors.
   dashboardV1Routes(expressApp);
   appV1Routes(expressApp);
+  testingV1Routes(expressApp);
   expressApp.use(
     (err: Error, req: Request, res: Response, next: NextFunction) => {
       functions.logger.error(err);
