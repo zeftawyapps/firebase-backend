@@ -151,6 +151,11 @@ dist/
 .gcp/
 gcp.txt
 
+# Service Account Keys (sensitive)
+**/admin.json
+admin.json
+service-account-key.json
+
 # Local configuration files
 config/local.json
 config/development.json
