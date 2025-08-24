@@ -151,10 +151,11 @@ dist/
 .gcp/
 gcp.txt
 
-# Service Account Keys (sensitive)
+# Service Account Keys (sensitive credentials)
 **/admin.json
 admin.json
 service-account-key.json
+firebase-adminsdk-*.json
 
 # Local configuration files
 config/local.json
