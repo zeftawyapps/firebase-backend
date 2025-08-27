@@ -113,6 +113,7 @@ export class LocationPointService {
     phone?: string;
     status?: string;
     rating?: number;
+    notificationToken?: string;
   }): Promise<string> {
     try {
       const locationPoint = LocationPoint.fromDriver(data);

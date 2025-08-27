@@ -1,8 +1,9 @@
 import { Application, NextFunction } from "express";
 import { OrderController } from "../../../app/order/order.contraller";
+import { userAuthMiddleware } from "../../../app/middleware/user-auth.middleware";
 
 export default function (app: Application) {
-  app.post("/order", (req, res, next: NextFunction) => {
+  app.post("/order", userAuthMiddleware, (req, res, next: NextFunction) => {
     const cat = new OrderController();
     return cat.createOrder(req, res, next);
   });

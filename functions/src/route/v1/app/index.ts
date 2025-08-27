@@ -7,4 +7,5 @@ export default function appV1Routes(app: Application) {
   require("./location-point.routes").default(app);
   require("./cart.routes").default(app);
   require("./user.routes").default(app);
+  require("./order.routes").default(app);
 }

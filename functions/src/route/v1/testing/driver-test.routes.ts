@@ -60,7 +60,11 @@ export default function (app: Application) {
   app.post(
     "/test/drivers/create-tanta-drivers",
     (req, res, next: NextFunction) => {
-      return driverLocationTestController.createTestDriversInTanta(req, res, next);
+      return driverLocationTestController.createTestDriversInTanta(
+        req,
+        res,
+        next
+      );
     }
   );
 
@@ -107,7 +111,11 @@ export default function (app: Application) {
   app.put(
     "/test/drivers/update-location/:driverId",
     (req, res, next: NextFunction) => {
-      return driverLocationTestController.updateTestDriverLocation(req, res, next);
+      return driverLocationTestController.updateTestDriverLocation(
+        req,
+        res,
+        next
+      );
     }
   );
 
@@ -120,14 +128,84 @@ export default function (app: Application) {
    *     description: Remove all test drivers created for testing purposes
    *     responses:
    *       200:
-   *         description: Cleanup information
+   *         description: Cleanup completed successfully
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 message:
+   *                   type: string
+   *                 deletedDrivers:
+   *                   type: number
+   *                 deletedLocationPoints:
+   *                   type: number
+   *                 success:
+   *                   type: boolean
+   *       500:
+   *         description: Internal server error
+   */
+  app.delete("/test/drivers/cleanup", (req, res, next: NextFunction) => {
+    return driverLocationTestController.cleanupTestDrivers(req, res, next);
+  });
+
+  /**
+   * @swagger
+   * /api/v1/test/drivers/list:
+   *   get:
+   *     summary: Get all test drivers
+   *     tags: [Testing]
+   *     description: Retrieve a list of all test drivers
+   *     responses:
+   *       200:
+   *         description: Test drivers retrieved successfully
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 message:
+   *                   type: string
+   *                 drivers:
+   *                   type: array
+   *                   items:
+   *                     type: object
+   *                 count:
+   *                   type: number
+   *       500:
+   *         description: Internal server error
+   */
+  app.get("/test/drivers/list", (req, res, next: NextFunction) => {
+    return driverLocationTestController.getTestDrivers(req, res, next);
+  });
+
+  /**
+   * @swagger
+   * /api/v1/test/drivers/delete/{driverId}:
+   *   delete:
+   *     summary: Delete a specific test driver
+   *     tags: [Testing]
+   *     parameters:
+   *       - in: path
+   *         name: driverId
+   *         required: true
+   *         schema:
+   *           type: string
+   *         description: The test driver ID to delete (must start with 'test_driver_')
+   *     responses:
+   *       200:
+   *         description: Test driver deleted successfully
+   *       400:
+   *         description: Invalid driver ID (not a test driver)
+   *       404:
+   *         description: Driver not found
    *       500:
    *         description: Internal server error
    */
   app.delete(
-    "/test/drivers/cleanup",
+    "/test/drivers/delete/:driverId",
     (req, res, next: NextFunction) => {
-      return driverLocationTestController.cleanupTestDrivers(req, res, next);
+      return driverLocationTestController.deleteTestDriver(req, res, next);
     }
   );
 }

@@ -1,101 +1,286 @@
 import { OrderReposatory } from "./order.repo";
-import { OperationProductRepo } from "../opration-data/prodect-opartion.repo";
-import { OrderProductsReposatory } from "./orderProducts.repo";
-import { ProductDataMovementRepo } from "../opration-data/product-data-movement.repo";
+// import { OperationProductRepo } from "../opration-data/prodect-opartion.repo";
+// import { OrderProductsReposatory } from "./orderProducts.repo";
+// import { ProductDataMovementRepo } from "../opration-data/product-data-movement.repo";
+import { OrderStatus } from "../../data_moleds/orders.model";
+import { BadRequestException } from "../../exception/bad-request.exception";
 
 export class OrderService {
   private orderRepo: OrderReposatory;
-  private products: OperationProductRepo;
-  private prodcutsOrder: OrderProductsReposatory;
-  private productMovment: ProductDataMovementRepo;
+  // private products: OperationProductRepo;
+  // private prodcutsOrder: OrderProductsReposatory;
+  // private productMovment: ProductDataMovementRepo;
 
   constructor() {
     this.orderRepo = new OrderReposatory();
-    this.products = new OperationProductRepo();
-    this.prodcutsOrder = new OrderProductsReposatory();
-    this.productMovment = new ProductDataMovementRepo();
+    // this.products = new OperationProductRepo();
+    // this.prodcutsOrder = new OrderProductsReposatory();
+    // this.productMovment = new ProductDataMovementRepo();
   }
 
   async createOrder(data: any) {
     try {
-      const products = data.products;
-      // assure the product is in data
-      if (!products || products.length === 0) {
-        throw new Error("No products in order");
-      }
-      // find the product
-      const dataProductFinded: any = [];
+      // Generate order ID
       const orderNumbers: number = Math.floor(Math.random() * 10000);
-      const orderId: string = "s" + orderNumbers;
+      const orderId: string = "ord_" + orderNumbers;
 
-      await Promise.all(
-        products.map(async (product: any) => {
-          const productData = await this.findProduct(product.productData.id);
-          if (!productData) {
-            throw new Error(
-              `Product with id ${product.productData.id} not found`
-            );
-          }
+      // Calculate total
+      // const total = items.reduce(
+      //   (sum, item) => sum + item.unitPrice * item.quantity,
+      //   0
+      // );
 
-          dataProductFinded.push({
-            productData: productData,
-            quantity: product.quantity,
-            price: product.price,
-            name: product.name,
-          });
+      // Build order data
+      // const orderData = {
+      //   shopId,
+      //   senderDetails,
+      //   recipientDetails,
+      //   items,
+      //   orderNumber: orderId,
+      //   status: OrderStatus.PENDING,
+      //   total,
+      //   createdAt: new Date(),
+      //   updatedAt: new Date(),
+      // };
 
-          await this.prodcutsOrder.createOrderProduct(
-            product,
-            orderId,
-            product.productData.id
-          );
-          const dataPosted = {
-            productData: productData,
-            orderId: orderId,
-            quantity: product.quantity,
-            price: product.price,
-            name: product.name,
-            total: product.total,
-            client: data.client,
-            date: data.orderDate,
-          };
-          await this.productMovment.insertProductMovement(orderId, dataPosted);
-        })
-      );
-      // add order number
-
-      const orderData = {
-        client: data.client,
-        orderNumber: orderId,
-        orderDate: data.orderDate,
-        status: data.status,
-        netTotal: data.netTotal,
-        taxRate: data.taxRate,
-        products: dataProductFinded,
-        tax: data.tax,
-        total: data.total,
-      };
-      await this.orderRepo.createOrder(orderData, orderId);
-
-      return "done";
+      await this.orderRepo.createOrder(data, orderId);
+      return orderId;
     } catch (error) {
       console.log(error);
       return error;
     }
   }
-  private async findProduct(id: string) {
-    return await this.products.findProductById(id);
-  }
+
+  // private async findProduct(id: string) {
+  //   return await this.products.findProductById(id);
+  // }
+
   async updateOrder(id: string, data: any) {
-    return await this.orderRepo.updateOrder(id, data);
+    const updateData = {
+      ...data,
+      updatedAt: new Date(),
+    };
+    return await this.orderRepo.updateOrder(id, updateData);
   }
+
   async deleteOrder(id: string) {
     return await this.orderRepo.deleteOrder(id);
   }
+
   async getOrders() {
     return await this.orderRepo.getOrders();
   }
+
   async getSingleOrder() {
     return await this.orderRepo.getSingleOrder();
+  }
+
+  // New methods for enhanced functionality
+  async getOrdersWithFilters(filters: any) {
+    try {
+      return await this.orderRepo.getOrdersWithFilters(filters);
+    } catch (error) {
+      console.log("Error getting filtered orders:", error);
+      throw error;
+    }
+  }
+
+  async getSingleOrderById(id: string, userId?: string) {
+    try {
+      const order = await this.orderRepo.getOrderById(id);
+
+      // Add authorization check if userId is provided
+      if (userId && order && order.userId !== userId) {
+        throw new BadRequestException("Unauthorized to access this order");
+      }
+
+      return order;
+    } catch (error) {
+      console.log("Error getting single order:", error);
+      throw error;
+    }
+  }
+
+  async updateOrderStatus(id: string, updateData: any) {
+    try {
+      // Validate status transition logic
+      const currentOrder = await this.orderRepo.getOrderById(id);
+      if (!currentOrder) {
+        throw new BadRequestException("Order not found");
+      }
+
+      const validTransitions = this.getValidStatusTransitions(
+        currentOrder.status
+      );
+      if (!validTransitions.includes(updateData.status)) {
+        throw new BadRequestException(
+          `Cannot transition from ${currentOrder.status} to ${updateData.status}`
+        );
+      }
+
+      return await this.orderRepo.updateOrder(id, updateData);
+    } catch (error) {
+      console.log("Error updating order status:", error);
+      throw error;
+    }
+  }
+
+  async acceptOrder(id: string, driverId: string) {
+    try {
+      const order = await this.orderRepo.getOrderById(id);
+      if (!order) {
+        throw new BadRequestException("Order not found");
+      }
+
+      if (order.status !== OrderStatus.PENDING) {
+        throw new BadRequestException(
+          "Order cannot be accepted in current status"
+        );
+      }
+
+      const updateData = {
+        status: OrderStatus.ACCEPTED,
+        driverId: driverId,
+        acceptedAt: new Date(),
+        updatedAt: new Date(),
+      };
+
+      return await this.orderRepo.updateOrder(id, updateData);
+    } catch (error) {
+      console.log("Error accepting order:", error);
+      throw error;
+    }
+  }
+
+  async pickupOrder(id: string, driverId: string) {
+    try {
+      const order = await this.orderRepo.getOrderById(id);
+      if (!order) {
+        throw new BadRequestException("Order not found");
+      }
+
+      if (
+        order.status !== OrderStatus.ACCEPTED ||
+        order.driverId !== driverId
+      ) {
+        throw new BadRequestException(
+          "Order cannot be picked up by this driver"
+        );
+      }
+
+      const updateData = {
+        status: OrderStatus.PICKED_UP,
+        pickedUpAt: new Date(),
+        updatedAt: new Date(),
+      };
+
+      return await this.orderRepo.updateOrder(id, updateData);
+    } catch (error) {
+      console.log("Error picking up order:", error);
+      throw error;
+    }
+  }
+
+  async deliverOrder(id: string, driverId: string) {
+    try {
+      const order = await this.orderRepo.getOrderById(id);
+      if (!order) {
+        throw new BadRequestException("Order not found");
+      }
+
+      if (
+        (order.status !== OrderStatus.PICKED_UP &&
+          order.status !== OrderStatus.IN_TRANSIT) ||
+        order.driverId !== driverId
+      ) {
+        throw new BadRequestException(
+          "Order cannot be delivered by this driver"
+        );
+      }
+
+      const updateData = {
+        status: OrderStatus.DELIVERED,
+        deliveredAt: new Date(),
+        updatedAt: new Date(),
+      };
+
+      return await this.orderRepo.updateOrder(id, updateData);
+    } catch (error) {
+      console.log("Error delivering order:", error);
+      throw error;
+    }
+  }
+
+  async cancelOrder(id: string, userId: string, reason: string) {
+    try {
+      const order = await this.orderRepo.getOrderById(id);
+      if (!order) {
+        throw new BadRequestException("Order not found");
+      }
+
+      if (
+        order.status === OrderStatus.DELIVERED ||
+        order.status === OrderStatus.CANCELLED
+      ) {
+        throw new BadRequestException("Order cannot be cancelled");
+      }
+
+      const updateData = {
+        status: OrderStatus.CANCELLED,
+        cancellationReason: reason,
+        cancelledBy: userId,
+        cancelledAt: new Date(),
+        updatedAt: new Date(),
+      };
+
+      return await this.orderRepo.updateOrder(id, updateData);
+    } catch (error) {
+      console.log("Error cancelling order:", error);
+      throw error;
+    }
+  }
+
+  async getDriverOrders(driverId: string, status?: string) {
+    try {
+      const filters = {
+        driverId: driverId,
+        status: status,
+      };
+      return await this.orderRepo.getOrdersWithFilters(filters);
+    } catch (error) {
+      console.log("Error getting driver orders:", error);
+      throw error;
+    }
+  }
+
+  async getShopOrders(shopId: string, status?: string) {
+    try {
+      const filters = {
+        shopId: shopId,
+        status: status,
+      };
+      return await this.orderRepo.getOrdersWithFilters(filters);
+    } catch (error) {
+      console.log("Error getting shop orders:", error);
+      throw error;
+    }
+  }
+
+  private getValidStatusTransitions(currentStatus: OrderStatus): OrderStatus[] {
+    const transitions: Record<OrderStatus, OrderStatus[]> = {
+      [OrderStatus.PENDING]: [
+        OrderStatus.ACCEPTED,
+        OrderStatus.CANCELLED,
+        OrderStatus.REJECTED,
+      ],
+      [OrderStatus.ACCEPTED]: [OrderStatus.PICKED_UP, OrderStatus.CANCELLED],
+      [OrderStatus.PICKED_UP]: [OrderStatus.IN_TRANSIT, OrderStatus.DELIVERED],
+      [OrderStatus.IN_TRANSIT]: [OrderStatus.DELIVERED],
+      [OrderStatus.DELIVERED]: [], // Terminal state
+      [OrderStatus.CANCELLED]: [], // Terminal state
+      [OrderStatus.REJECTED]: [], // Terminal state
+    };
+
+    return transitions[currentStatus] || [];
   }
 }

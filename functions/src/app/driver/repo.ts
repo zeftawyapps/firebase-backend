@@ -202,4 +202,44 @@ export class DriverRepo extends BaseRepository {
   // private deg2rad(deg: number): number {
   //   return deg * (Math.PI / 180);
   // }
+
+  // Delete driver by UID
+  async deleteDriver(uid: string): Promise<void> {
+    try {
+      const driverDoc = await this.getDriverByUid(uid);
+      if (!driverDoc.exists) {
+        throw new Error("Driver not found");
+      }
+
+      await this.delete(CollectionsName.drivers, driverDoc.id);
+    } catch (error) {
+      console.log("Error deleting driver:", error);
+      throw error;
+    }
+  }
+
+  // Get all test drivers (drivers with IDs starting with 'test_driver_')
+  async getTestDrivers(): Promise<any[]> {
+    try {
+      const collection = this.getCollectionReference(CollectionsName.drivers);
+      const snapshot = await collection.get();
+
+      const testDrivers: any[] = [];
+      snapshot.forEach((doc) => {
+        const data = doc.data();
+        if (data.uid && data.uid.startsWith("test_driver_")) {
+          testDrivers.push({
+            id: doc.id,
+            uid: data.uid,
+            ...data,
+          });
+        }
+      });
+
+      return testDrivers;
+    } catch (error) {
+      console.log("Error getting test drivers:", error);
+      throw error;
+    }
+  }
 }

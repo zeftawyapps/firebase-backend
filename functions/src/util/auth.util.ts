@@ -17,6 +17,7 @@ export class AuthUtil {
   }> {
     try {
       const decoded = await AuthUtil.parseJwt(token);
+      console.log("Decoded JWT:", decoded);
       return {
         exp: decoded.exp,
         iat: decoded.iat,

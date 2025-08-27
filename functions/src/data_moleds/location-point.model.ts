@@ -80,6 +80,7 @@ export class LocationPoint {
     phone?: string;
     status?: string;
     rating?: number;
+    notificationToken?: string;
   }): LocationPoint {
     return new LocationPoint({
       locationId: `${data.driverId}`,
@@ -92,6 +93,7 @@ export class LocationPoint {
         phone: data.phone,
         status: data.status,
         rating: data.rating,
+        notificationToken: data.notificationToken,
       },
       lastUpdated: new Date(),
       isActive: true,

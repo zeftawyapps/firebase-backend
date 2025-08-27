@@ -1,1 +1,1 @@
-gsutil cp -r  gs://staging.mashair-dev.appspot.com/dp*   E:\
+gsutil cp -r  gs://shipping-app-ead85.firebasestorage.app/db-2025-8*   E:\

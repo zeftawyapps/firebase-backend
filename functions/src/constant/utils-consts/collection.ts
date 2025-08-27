@@ -11,7 +11,7 @@ export class CollectionsName {
   static users = "usersAccountData";
   static drivers = "drivers";
   static shops = "shops";
-  static order = "order";
+  static order = "orders";
   static orderProducts = "orderProducts";
   static cart = "cart";
   static locationPoints = "locationPoints";

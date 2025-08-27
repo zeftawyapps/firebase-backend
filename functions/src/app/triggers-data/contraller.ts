@@ -24,11 +24,8 @@ export class TriggerController {
     console.log("onWriteProductTrigger", data, productId, catId);
     return await this;
   }
-  async onWriteProductOparionsTrigger(
-    snapshot: any,
 
-    productId: string
-  ) {
+  async onWriteProductOparionsTrigger(snapshot: any, productId: string) {
     const data = snapshot.after.data();
     const productService = new OperationsProductService();
     const inputData = {
@@ -45,7 +42,7 @@ export class TriggerController {
     return await this;
   }
 
-  // on order status changed
+  // Original order status changed trigger (for backward compatibility)
   async onOrderStatusChangedTrigger(snapshot: any, orderId: string) {
     const data = snapshot.after.data();
     if (data.status == orderStatus.refunded) {
@@ -55,6 +52,258 @@ export class TriggerController {
     }
 
     return await this;
+  }
+
+  // New enhanced order triggers
+
+  async onOrderCreated(snapshot: any, orderId: string) {
+    const orderData = snapshot.data();
+    console.log(`Order created: ${orderId}`, orderData);
+
+    try {
+      // Add order creation timestamp
+      await snapshot.ref.update({
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
+
+      // Notify relevant parties (shop, potential drivers)
+      await this.notifyOrderCreated(orderData, orderId);
+    } catch (error) {
+      console.error(`Error handling order creation for ${orderId}:`, error);
+    }
+
+    return this;
+  }
+
+  async onOrderDeleted(orderData: any, orderId: string) {
+    console.log(`Order deleted: ${orderId}`, orderData);
+
+    try {
+      // Clean up any related data if needed
+      await this.cleanupOrderData(orderData, orderId);
+    } catch (error) {
+      console.error(`Error handling order deletion for ${orderId}:`, error);
+    }
+
+    return this;
+  }
+
+  async onOrderStatusChanged(
+    snapshot: any,
+    orderId: string,
+    oldStatus: string,
+    newStatus: string
+  ) {
+    const orderData = snapshot.after.data();
+    console.log(`Order ${orderId} status changed: ${oldStatus} → ${newStatus}`);
+
+    try {
+      // Add status change metadata
+      await snapshot.after.ref.update({
+        [`statusHistory.${newStatus}`]: new Date(),
+        lastStatusChange: {
+          from: oldStatus,
+          to: newStatus,
+          timestamp: new Date(),
+        },
+      });
+
+      // Send notifications based on status change
+      await this.notifyStatusChange(orderData, orderId, oldStatus, newStatus);
+    } catch (error) {
+      console.error(`Error handling status change for ${orderId}:`, error);
+    }
+
+    return this;
+  }
+
+  async onOrderUpdated(snapshot: any, orderId: string) {
+    console.log(`Order updated: ${orderId}`);
+
+    try {
+      // Update the updatedAt timestamp
+      await snapshot.after.ref.update({
+        updatedAt: new Date(),
+      });
+    } catch (error) {
+      console.error(`Error handling order update for ${orderId}:`, error);
+    }
+
+    return this;
+  }
+
+  async onOrderAccepted(snapshot: any, orderId: string) {
+    const orderData = snapshot.data();
+    console.log(`Order accepted: ${orderId} by driver: ${orderData.driverId}`);
+
+    try {
+      // Update driver status to busy
+      if (orderData.driverId) {
+        const driverService = new DriverService();
+        await driverService.updateStatus(orderData.driverId, DriverStatus.BUSY);
+      }
+
+      // Notify shop and customer
+      await this.notifyOrderAccepted(orderData, orderId);
+    } catch (error) {
+      console.error(`Error handling order acceptance for ${orderId}:`, error);
+    }
+
+    return this;
+  }
+
+  async onOrderPickedUp(snapshot: any, orderId: string) {
+    const orderData = snapshot.data();
+    console.log(`Order picked up: ${orderId}`);
+
+    try {
+      // Notify customer and shop
+      await this.notifyOrderPickedUp(orderData, orderId);
+    } catch (error) {
+      console.error(`Error handling order pickup for ${orderId}:`, error);
+    }
+
+    return this;
+  }
+
+  async onOrderInTransit(snapshot: any, orderId: string) {
+    const orderData = snapshot.data();
+    console.log(`Order in transit: ${orderId}`);
+
+    try {
+      // Start location tracking
+      await this.startLocationTracking(orderData, orderId);
+    } catch (error) {
+      console.error(`Error handling order transit for ${orderId}:`, error);
+    }
+
+    return this;
+  }
+
+  async onOrderDelivered(snapshot: any, orderId: string) {
+    const orderData = snapshot.data();
+    console.log(`Order delivered: ${orderId}`);
+
+    try {
+      // Update driver status back to available
+      if (orderData.driverId) {
+        const driverService = new DriverService();
+        await driverService.updateStatus(
+          orderData.driverId,
+          DriverStatus.AVAILABLE
+        );
+      }
+
+      // Stop location tracking
+      await this.stopLocationTracking(orderData, orderId);
+
+      // Notify completion
+      await this.notifyOrderDelivered(orderData, orderId);
+    } catch (error) {
+      console.error(`Error handling order delivery for ${orderId}:`, error);
+    }
+
+    return this;
+  }
+
+  async onOrderCancelled(snapshot: any, orderId: string) {
+    const orderData = snapshot.data();
+    console.log(
+      `Order cancelled: ${orderId}, reason: ${orderData.cancellationReason}`
+    );
+
+    try {
+      // Update driver status back to available if assigned
+      if (orderData.driverId) {
+        const driverService = new DriverService();
+        await driverService.updateStatus(
+          orderData.driverId,
+          DriverStatus.AVAILABLE
+        );
+      }
+
+      // Notify cancellation
+      await this.notifyOrderCancelled(orderData, orderId);
+    } catch (error) {
+      console.error(`Error handling order cancellation for ${orderId}:`, error);
+    }
+
+    return this;
+  }
+
+  async onOrderRejected(snapshot: any, orderId: string) {
+    const orderData = snapshot.data();
+    console.log(`Order rejected: ${orderId}`);
+
+    try {
+      // Notify rejection and suggest alternatives
+      await this.notifyOrderRejected(orderData, orderId);
+    } catch (error) {
+      console.error(`Error handling order rejection for ${orderId}:`, error);
+    }
+
+    return this;
+  }
+
+  // Helper methods for notifications and actions
+  private async notifyOrderCreated(orderData: any, orderId: string) {
+    // Implementation for notifying about new order
+    console.log(`Notifying order creation: ${orderId}`);
+    // Add notification logic here (FCM, email, etc.)
+  }
+
+  private async notifyStatusChange(
+    orderData: any,
+    orderId: string,
+    oldStatus: string,
+    newStatus: string
+  ) {
+    // Implementation for status change notifications
+    console.log(
+      `Notifying status change for order ${orderId}: ${oldStatus} → ${newStatus}`
+    );
+    // Add notification logic here
+  }
+
+  private async notifyOrderAccepted(orderData: any, orderId: string) {
+    console.log(`Notifying order acceptance: ${orderId}`);
+    // Add notification logic here
+  }
+
+  private async notifyOrderPickedUp(orderData: any, orderId: string) {
+    console.log(`Notifying order pickup: ${orderId}`);
+    // Add notification logic here
+  }
+
+  private async notifyOrderDelivered(orderData: any, orderId: string) {
+    console.log(`Notifying order delivery: ${orderId}`);
+    // Add notification logic here
+  }
+
+  private async notifyOrderCancelled(orderData: any, orderId: string) {
+    console.log(`Notifying order cancellation: ${orderId}`);
+    // Add notification logic here
+  }
+
+  private async notifyOrderRejected(orderData: any, orderId: string) {
+    console.log(`Notifying order rejection: ${orderId}`);
+    // Add notification logic here
+  }
+
+  private async startLocationTracking(orderData: any, orderId: string) {
+    console.log(`Starting location tracking for order: ${orderId}`);
+    // Add location tracking logic here
+  }
+
+  private async stopLocationTracking(orderData: any, orderId: string) {
+    console.log(`Stopping location tracking for order: ${orderId}`);
+    // Add location tracking cleanup logic here
+  }
+
+  private async cleanupOrderData(orderData: any, orderId: string) {
+    console.log(`Cleaning up data for deleted order: ${orderId}`);
+    // Add cleanup logic here
   }
 
   // on shop created

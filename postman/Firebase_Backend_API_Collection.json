@@ -1,9 +1,10 @@
 {
   "info": {
-    "_postman_id": "firebase-shipping-app",
+    "_postman_id": "39051d01-28cd-4134-8a40-e575a669f625",
     "name": "Firebase Shipping App API",
     "description": "Complete API collection for Firebase Shipping App with Shop, Driver, and Location Point management",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "20237631"
   },
   "item": [
     {
@@ -12,24 +13,62 @@
         {
           "name": "Get Auth Token",
           "request": {
+            "auth": {
+              "type": "noauth"
+            },
             "method": "POST",
             "header": [
               {
                 "key": "Content-Type",
                 "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJodHRwczovL2lkZW50aXR5dG9vbGtpdC5nb29nbGVhcGlzLmNvbS9nb29nbGUuaWRlbnRpdHkuaWRlbnRpdHl0b29sa2l0LnYxLklkZW50aXR5VG9vbGtpdCIsImlhdCI6MTc1NjAzMjI0MCwiZXhwIjoxNzU2MDM1ODQwLCJpc3MiOiJmaXJlYmFzZS1hZG1pbnNkay1mYnN2Y0BzaGlwcGluZy1hcHAtZWFkODUuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20iLCJzdWIiOiJmaXJlYmFzZS1hZG1pbnNkay1mYnN2Y0BzaGlwcGluZy1hcHAtZWFkODUuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20iLCJ1aWQiOiJWZW1MT3JmOGwzWUVFSnp5TXluQTdsYUxYeTIzIiwiY2xhaW1zIjp7InByZW1pdW1BY2NvdW50Ijp0cnVlfX0.MD4O2bpHkf6nJSvybsbNLByH7X9IBuSrYiOlCzVFw7S6Oiwte3lId-tDDNJ2N5vlQO2v1naO5_IqFoIlVMQM6i9ge4o83YDai97nl-2ERQCZMGcMk_FyqhM9PmuyC4mz4sP_FMWezrZYBS1oO2e1dWmmmyam8xzvmtdv5gV-k_PThC186RtiwZDAS6mh9HIg6DKX_5snaUd_-Zd7nxIu2g1bUQRWqG-HAKlR6o3hySekCTstr1u5Nsp0TTdczb3UNyvrTdUmkhwTv2uZyuCTwMTxYQSVTbpMFN6_ND8CiImm0t8OOzIbM04CVtKBiMVAuv64zLptB7rKXyA_VhBcxg",
+                "type": "text"
               }
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"password123\"\n}"
+              "raw": "{\n  \"email\": \"dijad@example.com\",\n  \"password\": \"password123\"\n}"
             },
             "url": {
-              "raw": "{{baseUrl}}/auth/login",
+              "raw": "{{baseUrl}}/user/login",
               "host": ["{{baseUrl}}"],
-              "path": ["auth", "login"]
+              "path": ["user", "login"]
             },
             "description": "Login to get JWT token"
-          }
+          },
+          "response": []
+        },
+        {
+          "name": "regist",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer{{authTokendriver}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"uid\": \"user_12345\",\n  \"name\": \"dija\",\n  \"email\": \"dijad@example.com\",\n  \"phone\": \"+1234567890\",\n  \"password\":\"12345678\", \n  \"role\": \"driver\",\n  \"createdAt\": \"2023-10-27T10:00:00Z\",\n  \"isArchived\": false,\n  \"updatedAt\": \"2023-10-27T10:30:00Z\",\n  \"isActive\": true,\n  \"isFirstTimeLogin\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/user/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["user", "register"]
+            }
+          },
+          "response": []
         }
       ]
     },
@@ -39,6 +78,9 @@
         {
           "name": "Create Shop",
           "request": {
+            "auth": {
+              "type": "noauth"
+            },
             "method": "POST",
             "header": [
               {
@@ -47,19 +89,49 @@
               },
               {
                 "key": "Authorization",
-                "value": "Bearer {{authToken}}"
+                "value": "Bearer{{authTokenadmin}}"
               }
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"My Coffee Shop\",\n  \"description\": \"Best coffee in town\",\n  \"location\": {\n    \"latitude\": 40.7128,\n    \"longitude\": -74.0060,\n    \"address\": \"123 Main St, New York, NY\",\n    \"city\": \"New York\",\n    \"country\": \"USA\"\n  },\n  \"address\": \"123 Main St, New York, NY 10001\",\n  \"phone\": \"+1-555-123-4567\"\n}"
+              "raw": "{\n  \"name\": \"My Coffee Shop 2 \",\n  \"email\":\"moaz@dd.com\",\n\n  \"location\": {\n    \"latitude\": 40.7128,\n    \"longitude\": -74.0060\n  },\n  \"address\": \"123 Main St, New York, NY 10001\",\n  \"phone\": \"+1-555-123-4567\"\n}"
             },
             "url": {
               "raw": "{{baseUrl}}/shop",
               "host": ["{{baseUrl}}"],
               "path": ["shop"]
             }
-          }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Shop login",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer{{authTokenshop}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\"notificationToken\":\"sdafasdfsadfsadflkjsdaflsa mnldsa hsldfsd;flk j\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/shopLogin",
+              "host": ["{{baseUrl}}"],
+              "path": ["shopLogin"]
+            }
+          },
+          "response": []
         },
         {
           "name": "Update Shop",
@@ -72,36 +144,50 @@
               },
               {
                 "key": "Authorization",
-                "value": "Bearer {{authToken}}"
+                "value": "Bearer {{authTokenshop}}"
               }
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"Updated Coffee Shop Name\",\n  \"description\": \"Updated description\",\n  \"address\": \"456 New Address St\",\n  \"phone\": \"+1-555-987-6543\"\n}"
+              "raw": "{\n  \"name\": \"Updated Coffee Shop Name\",\n\n  \"address\": \"456 New Address St\",\n  \"phone\": \"+1-555-987-6543\"\n}"
             },
             "url": {
               "raw": "{{baseUrl}}/shop",
               "host": ["{{baseUrl}}"],
               "path": ["shop"]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Get Shop by ID",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
           "request": {
             "method": "GET",
             "header": [
               {
                 "key": "Authorization",
-                "value": "Bearer {{authToken}}"
+                "value": "Bearer {{authTokenadmin}}"
               }
             ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
             "url": {
               "raw": "{{baseUrl}}/shop/{{shopId}}",
               "host": ["{{baseUrl}}"],
               "path": ["shop", "{{shopId}}"]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Get Shop Profile",
@@ -118,7 +204,8 @@
               "host": ["{{baseUrl}}"],
               "path": ["shop", "profile"]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Get All Active Shops",
@@ -135,7 +222,8 @@
               "host": ["{{baseUrl}}"],
               "path": ["shops"]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Toggle Shop Status",
@@ -160,7 +248,8 @@
               "host": ["{{baseUrl}}"],
               "path": ["shop", "toggle-status"]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Update Shop Location",
@@ -185,7 +274,8 @@
               "host": ["{{baseUrl}}"],
               "path": ["shop", "location"]
             }
-          }
+          },
+          "response": []
         }
       ]
     },
@@ -215,7 +305,8 @@
               "host": ["{{baseUrl}}"],
               "path": ["driver"]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Get Driver Profile",
@@ -232,7 +323,8 @@
               "host": ["{{baseUrl}}"],
               "path": ["driver", "profile"]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Update Driver Location",
@@ -257,7 +349,8 @@
               "host": ["{{baseUrl}}"],
               "path": ["driver", "location"]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Update Driver Status",
@@ -282,7 +375,8 @@
               "host": ["{{baseUrl}}"],
               "path": ["driver", "status"]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Set Rally Point",
@@ -307,7 +401,8 @@
               "host": ["{{baseUrl}}"],
               "path": ["driver", "rally-point"]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Update Driver Rating",
@@ -332,7 +427,37 @@
               "host": ["{{baseUrl}}"],
               "path": ["driver", "rating"]
             }
-          }
+          },
+          "response": []
+        },
+        {
+          "name": "Update  driverlogin Copy",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer{{authTokendriver}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\"notificationToken\":\"sdafasdfsadfsadflkjsdaflsa mnldsa hsldfsd;flk j\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/driverLogin",
+              "host": ["{{baseUrl}}"],
+              "path": ["driverLogin"]
+            }
+          },
+          "response": []
         }
       ]
     },
@@ -362,7 +487,8 @@
               "host": ["{{baseUrl}}"],
               "path": ["location-point", "{{locationPointId}}"]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Update Driver Location",
@@ -387,7 +513,8 @@
               "host": ["{{baseUrl}}"],
               "path": ["location-point", "driver", "{{driverId}}"]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Update Order Status",
@@ -412,7 +539,8 @@
               "host": ["{{baseUrl}}"],
               "path": ["location-point", "order", "status"]
             }
-          }
+          },
+          "response": []
         }
       ]
     },
@@ -434,7 +562,8 @@
               "host": ["{{baseUrl}}"],
               "path": ["landingPage"]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Get Dashboard",
@@ -451,9 +580,419 @@
               "host": ["{{baseUrl}}"],
               "path": ["dashboard"]
             }
-          }
+          },
+          "response": []
         }
       ]
+    },
+    {
+      "name": "Order Management",
+      "item": [
+        {
+          "name": "Create Order",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"shopId\": \"{{shopId}}\",\n  \"senderDetails\": {\n    \"name\": \"Test Shop\",\n    \"phone\": \"+20123456789\",\n    \"address\": \"123 Shop Street, Tanta, Egypt\",\n    \"latitude\": 30.7865,\n    \"longitude\": 31.0004,\n    \"notes\": \"Shop location notes\"\n  },\n  \"recipientDetails\": {\n    \"name\": \"John Customer\",\n    \"phone\": \"+20987654321\",\n    \"address\": \"456 Customer Ave, Tanta, Egypt\",\n    \"latitude\": 30.7900,\n    \"longitude\": 31.0050,\n    \"notes\": \"Leave at door\"\n  },\n  \"items\": [\n    {\n      \"id\": \"item1\",\n      \"name\": \"Electronics Package\",\n      \"description\": \"Smartphone and accessories\",\n      \"quantity\": 1,\n      \"unitPrice\": 500,\n      \"weight\": 0.5\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/order",
+              "host": ["{{baseUrl}}"],
+              "path": ["order"]
+            },
+            "description": "Create a new shipping order"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Order by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/order/{{orderId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["order", "{{orderId}}"]
+            },
+            "description": "Get a specific order by ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Order",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"accepted\",\n  \"driverId\": \"{{driverId}}\",\n  \"notes\": \"Order updated notes\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/order/{{orderId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["order", "{{orderId}}"]
+            },
+            "description": "Update an existing order"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Orders (Filtered)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/orders?status=pending&limit=10&offset=0",
+              "host": ["{{baseUrl}}"],
+              "path": ["orders"],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "pending",
+                  "description": "Filter by order status"
+                },
+                {
+                  "key": "shopId",
+                  "value": "{{shopId}}",
+                  "description": "Filter by shop ID",
+                  "disabled": true
+                },
+                {
+                  "key": "limit",
+                  "value": "10",
+                  "description": "Number of orders to return"
+                },
+                {
+                  "key": "offset",
+                  "value": "0",
+                  "description": "Number of orders to skip"
+                }
+              ]
+            },
+            "description": "Get orders with optional filters"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Order Status",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"inTransit\",\n  \"driverId\": \"{{driverId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/order/{{orderId}}/status",
+              "host": ["{{baseUrl}}"],
+              "path": ["order", "{{orderId}}", "status"]
+            },
+            "description": "Update order status with validation"
+          },
+          "response": []
+        },
+        {
+          "name": "Accept Order (Driver)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{driverAuthToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/order/{{orderId}}/accept",
+              "host": ["{{baseUrl}}"],
+              "path": ["order", "{{orderId}}", "accept"]
+            },
+            "description": "Driver accepts an order"
+          },
+          "response": []
+        },
+        {
+          "name": "Pickup Order (Driver)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{driverAuthToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/order/{{orderId}}/pickup",
+              "host": ["{{baseUrl}}"],
+              "path": ["order", "{{orderId}}", "pickup"]
+            },
+            "description": "Driver marks order as picked up"
+          },
+          "response": []
+        },
+        {
+          "name": "Deliver Order (Driver)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{driverAuthToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/order/{{orderId}}/deliver",
+              "host": ["{{baseUrl}}"],
+              "path": ["order", "{{orderId}}", "deliver"]
+            },
+            "description": "Driver marks order as delivered"
+          },
+          "response": []
+        },
+        {
+          "name": "Cancel Order",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"reason\": \"Customer requested cancellation\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/order/{{orderId}}/cancel",
+              "host": ["{{baseUrl}}"],
+              "path": ["order", "{{orderId}}", "cancel"]
+            },
+            "description": "Cancel an order with reason"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Driver Orders",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{driverAuthToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/orders/driver?status=accepted",
+              "host": ["{{baseUrl}}"],
+              "path": ["orders", "driver"],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "accepted",
+                  "description": "Filter by order status"
+                }
+              ]
+            },
+            "description": "Get orders assigned to current driver"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Shop Orders",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{shopAuthToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/orders/shop?status=pending",
+              "host": ["{{baseUrl}}"],
+              "path": ["orders", "shop"],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "pending",
+                  "description": "Filter by order status"
+                }
+              ]
+            },
+            "description": "Get orders for current shop"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "test",
+      "item": [
+        {
+          "name": "test-drivers-add",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJodHRwczovL2lkZW50aXR5dG9vbGtpdC5nb29nbGVhcGlzLmNvbS9nb29nbGUuaWRlbnRpdHkuaWRlbnRpdHl0b29sa2l0LnYxLklkZW50aXR5VG9vbGtpdCIsImlhdCI6MTc1NjAzMjI0MCwiZXhwIjoxNzU2MDM1ODQwLCJpc3MiOiJmaXJlYmFzZS1hZG1pbnNkay1mYnN2Y0BzaGlwcGluZy1hcHAtZWFkODUuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20iLCJzdWIiOiJmaXJlYmFzZS1hZG1pbnNkay1mYnN2Y0BzaGlwcGluZy1hcHAtZWFkODUuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20iLCJ1aWQiOiJWZW1MT3JmOGwzWUVFSnp5TXluQTdsYUxYeTIzIiwiY2xhaW1zIjp7InByZW1pdW1BY2NvdW50Ijp0cnVlfX0.MD4O2bpHkf6nJSvybsbNLByH7X9IBuSrYiOlCzVFw7S6Oiwte3lId-tDDNJ2N5vlQO2v1naO5_IqFoIlVMQM6i9ge4o83YDai97nl-2ERQCZMGcMk_FyqhM9PmuyC4mz4sP_FMWezrZYBS1oO2e1dWmmmyam8xzvmtdv5gV-k_PThC186RtiwZDAS6mh9HIg6DKX_5snaUd_-Zd7nxIu2g1bUQRWqG-HAKlR6o3hySekCTstr1u5Nsp0TTdczb3UNyvrTdUmkhwTv2uZyuCTwMTxYQSVTbpMFN6_ND8CiImm0t8OOzIbM04CVtKBiMVAuv64zLptB7rKXyA_VhBcxg",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"dijad@example.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/test/drivers/create-tanta-drivers",
+              "host": ["{{baseUrl}}"],
+              "path": ["test", "drivers", "create-tanta-drivers"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "test-driver-clean",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/test/drivers/cleanup",
+              "host": ["{{baseUrl}}"],
+              "path": ["test", "drivers", "cleanup"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "New Request",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": " dCjJXk8c_-qH7TOjRdPk5AjHlBgOzNHc-GJAHtt1kCK",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "true",
+            "type": "text"
+          },
+          {
+            "key": "result",
+            "value": "[object Object]",
+            "type": "text"
+          },
+          {
+            "key": "Authorization",
+            "value": "",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"specificationVersion\": 1,\n  \"value\": {\n    \"tamm_platform_id\": \"545464AD5555\",\n    \"lab_details\": {\n      \"name_ar\": \"مختبر ايكاد لعلوم المواد\",\n      \"name_en\": \"ICAD Materials Science Lab\",\n      \"address_ar\": \" قطعة ٣٤، قطاع م٤٠\",\n      \"address_en\": \"Plot 34, Sector M40\",\n      \"city\": \"Industrial City of Abu Dhabi (ICAD 1)\",\n      \"po_box\": \"55443\",\n      \"emirate\": { \"id\": \"5e6f0bde-44c3-4ed9-9f69-931d5a55690d\" },\n      \"gmap_location_url\": null,\n      \"landline_number\": \"+97125501000\",\n      \"email_address\": \"icad@iit.com\",\n      \"fax_number\": \"+97125501001\",\n      \"website\": \"https://www.iit-global.com/ae\",\n      \"has_mother_company\": true,\n      \"company_name_ar\": \"شركة الاختبارات الصناعية الدولية (فرع أبوظبي)\",\n      \"company_name_en\": \"International Industrial Testing Inc. (Abu Dhabi Branch)\",\n      \"company_address\": \"Al Bateen Towers, Office 3401\"\n    },\n    \"trade_license_details\": {\n      \"trade_license_emirate\": { \"id\": \"5e6f0bde-44c3-4ed9-9f69-931d5a55690d\" },\n      \"trade_license_number\": \"CN-4055667\",\n      \"trade_license_issuer\": \"Abu Dhabi Department of Economic \",\n      \"legal_form_ar\": \"فرع شركة أجنبية\",\n      \"legal_form_en\": \"Branch of a Foreign Company\",\n      \"valid_until\": \"2025-07-31\",\n      \"trade_license\": {\n        \"id\": \"93d7dd5a-f311-42e3-a7da-d4a439499415\",\n        \"name\": \"100.pdf\",\n        \"mimeType\": \"application/pdf\",\n        \"size\": 13457\n      }\n    },\n    \"insurance_details\": {\n      \"insurance_number\": \"ADNIC/PL/2025/9876\",\n      \"insurance_provider\": \"Abu Dhabi National Insurance Company (ADNIC)\",\n      \"vaild_until\": \"2025-07-31\",\n      \"insurance\": {\n        \"id\": \"adb7e0d5-1cfa-453b-98cd-7e548503ea90\",\n        \"name\": \"100.pdf\",\n        \"mimeType\": \"application/pdf\",\n        \"size\": 13371\n      }\n    },\n    \"visit_details\": {\n      \"visited\": false,\n      \"visit_id\": null,\n      \"date_time\": null,\n      \"report_id\": null,\n      \"visit_report\": null\n    },\n    \"accreditations\": [\n      {\n        \"accreditation_body\": {\n          \"dataEntity\": \"e2057e44-6a5c-48ce-8f02-71f55afd4c63\",\n          \"dataEntry\": \"c61b7ecf-025a-4995-bd7b-b81b4ea118cd\"\n        },\n        \"accreditation_number\": \"654654564\",\n        \"valid_until\": \"2025-07-31\",\n        \"accreditation_certificate\": {\n          \"id\": \"0df49f00-ef2f-49de-aabb-727adc0dd67f\",\n          \"name\": \"100.pdf\",\n          \"mimeType\": \"application/pdf\",\n          \"size\": 167604\n        },\n        \"accreditation_scope\": {\n          \"id\": \"37c90d2f-c742-4241-a893-60d5907d4852\",\n          \"name\": \"100.pdf\",\n          \"mimeType\": \"application/pdf\",\n          \"size\": 45457\n        }\n      }\n    ],\n    \"poa_information\": {\n      \"is_poa_admin\": false,\n      \"eid\": \"784-1979-4445551-1\",\n      \"first_name_ar\": \"سلطان\",\n      \"first_name_en\": \"Sultan\",\n      \"last_name_ar\": \"الحوسني\",\n      \"last_name_en\": \"Hosani\",\n      \"position\": \"Poa\",\n      \"email_address\": \"alhosani@uae.ae\",\n      \"mobile_number\": \"+97125501000\",\n      \"la_for_poa\": {\n        \"id\": \"50459b75-2e00-450f-ad19-0b7f80b708bd\",\n        \"name\": \"100.pdf\",\n        \"mimeType\": \"application/pdf\",\n        \"size\": 1921\n      },\n      \"la_valid_until\": \"2025-07-31\",\n      \"eidcopy\": {\n        \"id\": \"6b912a4a-dafe-44c8-a6f4-62b9f2d0adf3\",\n        \"name\": \"100.pdf\",\n        \"mimeType\": \"application/pdf\",\n        \"size\": 1921\n      },\n      \"eid_expiration\": \"2025-07-30\"\n    },\n    \"lab_admin_information\": {\n      \"eid\": \"784-1990-2223334-4\",\n      \"first_name_ar\": \"أمينة\",\n      \"first_name_en\": \"Amina\",\n      \"last_name_ar\": \"خان\",\n      \"last_name_en\": \"Khan\",\n      \"email_address\": \"han@iit.ae\",\n      \"mobile_number\": \"+97125501000\",\n      \"eidcopy\": {\n        \"id\": \"f7c346a6-4930-498d-919b-d4ad8ad37f30\",\n        \"name\": \"100.pdf\",\n        \"mimeType\": \"application/pdf\",\n        \"size\": 167604\n      },\n      \"eid_valid_until\": \"2026-07-31\"\n    },\n    \"required_documents\": {\n      \"scope_of_designation_template\": [\n        {\n          \"id\": \"1a9fc9a8-62db-488e-975e-6feb1297a3a6\",\n          \"name\": \"100.pdf\",\n          \"mimeType\": \"application/pdf\",\n          \"size\": 167604\n        }\n      ],\n      \"scope_of_designation\": {\n        \"id\": \"4a7061a4-32fd-4346-a7f2-ff88dbdeed10\",\n        \"name\": \"100.pdf\",\n        \"mimeType\": \"application/pdf\",\n        \"size\": 167604\n      },\n      \"moiat_registration_certificate\": {\n          \"id\": \"dbf3c822-af80-43f7-bc30-cedd90bd2cff\",\n          \"name\": \"100.pdf\",\n          \"mimeType\": \"application/pdf\",\n          \"size\": 167604\n        },\n      \"valid_until\": \"2025-07-31\",\n      \"additional_documents\": [\n        {\n          \"id\": \"b06c9152-99a5-494e-b85d-b7cfa92ea864\",\n          \"name\": \"100.pdf\",\n          \"mimeType\": \"application/pdf\",\n          \"size\": 167604\n        }\n      ]\n    }\n  }\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://dlabs.qcc.gov.ae/api/v1/v/68970dd7-c1f3-4bbf-8d55-9e8748ca6f96/v1/entities/b21fd78a-60b2-4ac7-9fc2-2e7976d8580f/entries",
+          "protocol": "https",
+          "host": ["dlabs", "qcc", "gov", "ae"],
+          "path": [
+            "api",
+            "v1",
+            "v",
+            "68970dd7-c1f3-4bbf-8d55-9e8748ca6f96",
+            "v1",
+            "entities",
+            "b21fd78a-60b2-4ac7-9fc2-2e7976d8580f",
+            "entries"
+          ]
+        }
+      },
+      "response": []
     }
   ],
   "auth": {
@@ -461,7 +1000,7 @@
     "bearer": [
       {
         "key": "token",
-        "value": "{{authToken}}",
+        "value": "{{authTokenshop}}",
         "type": "string"
       }
     ]
@@ -485,8 +1024,7 @@
   "variable": [
     {
       "key": "baseUrl",
-      "value": "http://localhost:5001/firebase-backend/us-central1/app",
-      "type": "string"
+      "value": "http://localhost:5001/firebase-backend/us-central1/app"
     }
   ]
 }

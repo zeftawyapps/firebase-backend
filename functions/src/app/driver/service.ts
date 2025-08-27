@@ -73,4 +73,14 @@ export class DriverService {
       hasRallyPoint: !!driver.rallyPoint,
     };
   }
+
+  // Delete driver
+  async deleteDriver(uid: string): Promise<void> {
+    return await this.driverRepo.deleteDriver(uid);
+  }
+
+  // Get all test drivers
+  async getTestDrivers(): Promise<any[]> {
+    return await this.driverRepo.getTestDrivers();
+  }
 }

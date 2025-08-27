@@ -2,7 +2,7 @@ import * as bodyParser from "body-parser";
 import { Application, NextFunction, Request, Response } from "express";
 import * as admin from "firebase-admin";
 import * as functions from "firebase-functions";
-import dashboardV1Routes from "../route/v1/dashboard";
+// import dashboardV1Routes from "../route/v1/dashboard";
 import testingV1Routes from "../route/v1/testing";
 import express = require("express");
 import { ResponseUtil } from "../util/response.util";
@@ -29,7 +29,7 @@ function expressInit(expressApp: Application) {
   expressApp.use(cors());
 
   // handle all app errors.
-  dashboardV1Routes(expressApp);
+  // dashboardV1Routes(expressApp);
   appV1Routes(expressApp);
   testingV1Routes(expressApp);
   expressApp.use(
