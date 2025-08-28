@@ -16,7 +16,10 @@
       "port": 9229,
       "request": "attach",
       "skipFiles": ["<node_internals>/**"],
-      "type": "node"
+      "type": "node",
+      "localRoot": "${workspaceFolder}/functions",
+      "remoteRoot": "/workspace",
+      "restart": true
     },
 
     {

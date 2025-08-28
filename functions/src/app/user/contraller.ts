@@ -57,6 +57,8 @@ export class UserController {
   // Create profile
   async createAccount(req: any, res: Response, next: NextFunction) {
     try {
+
+      console.log("Creating account with data:", req.body);
       const data = req.body;
 
       const validateData = AppUtil.validate(data, userValidation.createAccount);
