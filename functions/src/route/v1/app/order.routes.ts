@@ -438,4 +438,91 @@ export default function (app: Application) {
       return orderController.getShopOrders(req, res, next);
     }
   );
+
+  /**
+   * @swagger
+   * /order/{orderId}/nearby-drivers:
+   *   get:
+   *     summary: Find nearby drivers for a pending order
+   *     tags: [Order]
+   *     security:
+   *       - bearerAuth: []
+   *     parameters:
+   *       - in: path
+   *         name: orderId
+   *         required: true
+   *         schema:
+   *           type: string
+   *         description: The order ID
+   *       - in: query
+   *         name: radius
+   *         schema:
+   *           type: number
+   *           default: 10
+   *         description: Search radius in kilometers
+   *     responses:
+   *       200:
+   *         description: Nearby drivers found successfully
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 orderId:
+   *                   type: string
+   *                 orderLocation:
+   *                   type: object
+   *                   properties:
+   *                     latitude:
+   *                       type: number
+   *                     longitude:
+   *                       type: number
+   *                     address:
+   *                       type: string
+   *                 searchRadius:
+   *                   type: number
+   *                 totalDriversFound:
+   *                   type: number
+   *                 availableDrivers:
+   *                   type: number
+   *                 drivers:
+   *                   type: array
+   *                   items:
+   *                     type: object
+   *                     properties:
+   *                       driverId:
+   *                         type: string
+   *                       name:
+   *                         type: string
+   *                       phone:
+   *                         type: string
+   *                       location:
+   *                         type: object
+   *                         properties:
+   *                           latitude:
+   *                             type: number
+   *                           longitude:
+   *                             type: number
+   *                           address:
+   *                             type: string
+   *                       rating:
+   *                         type: number
+   *                       status:
+   *                         type: string
+   *                       notificationToken:
+   *                         type: string
+   *       400:
+   *         description: Order must be in pending status or validation error
+   *       404:
+   *         description: Order not found
+   *       401:
+   *         description: Unauthorized
+   */
+  app.get(
+    "/order/:id/nearby-drivers",
+    userAuthMiddleware,
+    (req, res, next: NextFunction) => {
+      return orderController.findNearbyDriversForOrder(req, res, next);
+    }
+  );
 }

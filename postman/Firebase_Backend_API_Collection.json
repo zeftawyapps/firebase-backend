@@ -885,6 +885,170 @@
             "description": "Get orders for current shop"
           },
           "response": []
+        },
+        {
+          "name": "Find Nearby Drivers for Order",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/order/{{orderId}}/nearby-drivers?radius=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["order", "{{orderId}}", "nearby-drivers"],
+              "query": [
+                {
+                  "key": "radius",
+                  "value": "10",
+                  "description": "Search radius in kilometers"
+                }
+              ]
+            },
+            "description": "Find nearby available drivers for a pending order"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Notification Management",
+      "item": [
+        {
+          "name": "Get Driver Notifications",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/notification/driver/{{driverId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["notification", "driver", "{{driverId}}"]
+            },
+            "description": "Get all notifications for a specific driver"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Unread Notifications",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/notification/driver/{{driverId}}/unread",
+              "host": ["{{baseUrl}}"],
+              "path": ["notification", "driver", "{{driverId}}", "unread"]
+            },
+            "description": "Get unread notifications for a specific driver"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Order Notifications",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/notification/order/{{orderId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["notification", "order", "{{orderId}}"]
+            },
+            "description": "Get all notifications for a specific order"
+          },
+          "response": []
+        },
+        {
+          "name": "Mark Notification as Read",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/notification/{{notificationId}}/read",
+              "host": ["{{baseUrl}}"],
+              "path": ["notification", "{{notificationId}}", "read"]
+            },
+            "description": "Mark a notification as read"
+          },
+          "response": []
+        },
+        {
+          "name": "Mark Notification as Delivered",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/notification/{{notificationId}}/delivered",
+              "host": ["{{baseUrl}}"],
+              "path": ["notification", "{{notificationId}}", "delivered"]
+            },
+            "description": "Mark a notification as delivered (FCM confirmation)"
+          },
+          "response": []
+        },
+        {
+          "name": "Resend Notification",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/notification/{{notificationId}}/resend",
+              "host": ["{{baseUrl}}"],
+              "path": ["notification", "{{notificationId}}", "resend"]
+            },
+            "description": "Resend a failed notification"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Notification",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/notification/{{notificationId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["notification", "{{notificationId}}"]
+            },
+            "description": "Delete a notification"
+          },
+          "response": []
         }
       ]
     },

@@ -4,15 +4,21 @@ import { OrderReposatory } from "./order.repo";
 // import { ProductDataMovementRepo } from "../opration-data/product-data-movement.repo";
 import { OrderStatus } from "../../data_moleds/orders.model";
 import { BadRequestException } from "../../exception/bad-request.exception";
+import { LocationPointService } from "../location-point/service";
+import { NotificationService } from "../notification/notification.service";
 
 export class OrderService {
   private orderRepo: OrderReposatory;
+  private locationPointService: LocationPointService;
+  private notificationService: NotificationService;
   // private products: OperationProductRepo;
   // private prodcutsOrder: OrderProductsReposatory;
   // private productMovment: ProductDataMovementRepo;
 
   constructor() {
     this.orderRepo = new OrderReposatory();
+    this.locationPointService = new LocationPointService();
+    this.notificationService = new NotificationService();
     // this.products = new OperationProductRepo();
     // this.prodcutsOrder = new OrderProductsReposatory();
     // this.productMovment = new ProductDataMovementRepo();
@@ -47,7 +53,7 @@ export class OrderService {
       data.status = status;
       data.createdAt = new Date();
       data.updatedAt = new Date();
-      data.total = total; 
+      data.total = total;
       await this.orderRepo.createOrder(data, orderId);
       return orderId;
     } catch (error) {
@@ -155,10 +161,12 @@ export class OrderService {
       }
 
       const result = await this.orderRepo.updateOrder(id, enhancedUpdateData);
-      
+
       // Log status change for audit trail
-      console.log(`Order ${id} status changed from ${currentOrder.status} to ${updateData.status}`);
-      
+      console.log(
+        `Order ${id} status changed from ${currentOrder.status} to ${updateData.status}`
+      );
+
       return result;
     } catch (error) {
       console.log("Error updating order status:", error);
@@ -323,5 +331,108 @@ export class OrderService {
     };
 
     return transitions[currentStatus] || [];
+  }
+
+  // Find nearby drivers for an order
+  async findNearbyDriversForOrder(orderId: string, radiusKm = 10) {
+    try {
+      const order = await this.orderRepo.getOrderById(orderId);
+      if (!order) {
+        throw new BadRequestException("Order not found");
+      }
+
+      if (order.status !== OrderStatus.PENDING) {
+        throw new BadRequestException(
+          "Order must be in pending status to find drivers"
+        );
+      }
+
+      // Use sender details location to find nearby drivers
+      const { latitude, longitude } = order.senderDetails;
+      if (!latitude || !longitude) {
+        throw new BadRequestException("Order sender location is required");
+      }
+
+      const nearbyDrivers =
+        await this.locationPointService.getDriversNearLocation(
+          latitude,
+          longitude,
+          radiusKm
+        );
+
+      // Filter only available drivers
+      const availableDrivers = nearbyDrivers.filter(
+        (driver) => driver.metadata && driver.metadata.status === "available"
+      );
+
+      const driversData = availableDrivers.map((driver) => ({
+        driverId: driver.entityId,
+        name: driver.name,
+        phone: driver.metadata?.phone || "N/A",
+        location: {
+          latitude: driver.location.latitude,
+          longitude: driver.location.longitude,
+          address: driver.location.address,
+        },
+        rating: driver.metadata?.rating || 0,
+        status: driver.metadata?.status || "unknown",
+        notificationToken: driver.metadata?.notificationToken || null,
+      }));
+
+      // Send notifications to all available drivers
+      if (availableDrivers.length > 0) {
+        try {
+          const driverIds = availableDrivers
+            .map((driver) => driver.entityId)
+            .filter((id) => id !== undefined) as string[];
+          const driverNotificationData = availableDrivers.map((driver) => ({
+            name: driver.name,
+            notificationToken: driver.metadata?.notificationToken || "",
+          }));
+
+          const orderDataForNotification = {
+            orderId,
+            senderDetails: order.senderDetails,
+            recipientDetails: order.recipientDetails,
+            items: order.items,
+            total: order.total,
+          };
+
+          const notificationResults =
+            await this.notificationService.sendNotificationToDrivers(
+              driverIds,
+              driverNotificationData,
+              orderDataForNotification
+            );
+
+          console.log(
+            `Notifications sent: ${notificationResults.success} successful, ${notificationResults.failed} failed`
+          );
+        } catch (notificationError) {
+          console.error(
+            "Error sending notifications to drivers:",
+            notificationError
+          );
+          // Don't throw error here as the main operation (finding drivers) was successful
+        }
+      }
+
+      return {
+        orderId,
+        orderLocation: {
+          latitude,
+          longitude,
+          address: order.senderDetails.address,
+        },
+        searchRadius: radiusKm,
+        totalDriversFound: nearbyDrivers.length,
+        availableDrivers: availableDrivers.length,
+        drivers: driversData,
+        notificationsSent: availableDrivers.length > 0 ? true : false,
+      };
+    } catch (error) {
+      console.log("Error finding nearby drivers for order:", error);
+      throw error;
+    }
   }
 }

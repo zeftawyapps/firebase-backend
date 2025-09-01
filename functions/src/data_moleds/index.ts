@@ -5,3 +5,8 @@ export { DriverModel, DriverStatus, Driver } from "./driver.model";
 export { ShopModel, Shop } from "./shop.model";
 export { LocationModel, Location } from "./location.model";
 export { LocationPoint, LocationType } from "./location-point.model";
+export {
+  Notification,
+  NotificationType,
+  NotificationStatus,
+} from "./notification.model";

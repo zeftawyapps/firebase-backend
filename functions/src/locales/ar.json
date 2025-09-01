@@ -2,5 +2,7 @@
 	"thier are department has same sort": "thier are department has same sort",
 	"errors": {
 		"unAuthorized": "errors.unAuthorized"
-	}
+	},
+	"Cannot transition from pending to inTransit": "Cannot transition from pending to inTransit",
+	"Order must be in pending status to find drivers": "Order must be in pending status to find drivers"
 }

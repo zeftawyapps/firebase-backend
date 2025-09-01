@@ -89,7 +89,7 @@ export class OrderController {
     try {
       const id = req.params.id;
       const { status, driverId, cancellationReason } = req.body;
-      const userId = req.user?.id;
+      const userId = req.user?.userId;
 
       // Validate status transition
       if (!Object.values(OrderStatus).includes(status)) {
@@ -97,7 +97,6 @@ export class OrderController {
       }
 
       // Check if driver ID is required for accepted status
-      
 
       // Check if cancellation reason is required
       if (
@@ -205,6 +204,26 @@ export class OrderController {
       }
 
       const result = await this.service.getShopOrders(shopId, status);
+      ResponseUtil.sendResponse(req, res, result);
+    } catch (error) {
+      ResponseUtil.sendException(req, res, error);
+    }
+  }
+
+  async findNearbyDriversForOrder(req: any, res: any, next: NextFunction) {
+    try {
+      const orderId = req.params.id;
+      const { radius } = req.query;
+      const radiusKm = radius ? parseInt(radius as string) : 10;
+
+      if (!orderId) {
+        throw new BadRequestException("Order ID is required");
+      }
+
+      const result = await this.service.findNearbyDriversForOrder(
+        orderId,
+        radiusKm
+      );
       ResponseUtil.sendResponse(req, res, result);
     } catch (error) {
       ResponseUtil.sendException(req, res, error);
