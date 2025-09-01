@@ -22,13 +22,13 @@ export class OrderService {
     try {
       // Generate order ID
       const orderNumbers: number = Math.floor(Math.random() * 10000);
-      const orderId: string = "ord_" + orderNumbers;
+      const orderId: string = "ord_" + orderNumbers + new Date().getTime();
 
       // Calculate total
-      // const total = items.reduce(
-      //   (sum, item) => sum + item.unitPrice * item.quantity,
-      //   0
-      // );
+      let total = 0;
+      data.items.forEach((item: any) => {
+        total += item.unitPrice * item.quantity;
+      });
 
       // Build order data
       // const orderData = {
@@ -43,6 +43,11 @@ export class OrderService {
       //   updatedAt: new Date(),
       // };
 
+      const status = OrderStatus.PENDING;
+      data.status = status;
+      data.createdAt = new Date();
+      data.updatedAt = new Date();
+      data.total = total; 
       await this.orderRepo.createOrder(data, orderId);
       return orderId;
     } catch (error) {
@@ -104,6 +109,8 @@ export class OrderService {
   async updateOrderStatus(id: string, updateData: any) {
     try {
       // Validate status transition logic
+      console.log("Validating status transition:", updateData);
+
       const currentOrder = await this.orderRepo.getOrderById(id);
       if (!currentOrder) {
         throw new BadRequestException("Order not found");
@@ -118,7 +125,41 @@ export class OrderService {
         );
       }
 
-      return await this.orderRepo.updateOrder(id, updateData);
+      // Add appropriate timestamps based on status
+      const enhancedUpdateData = {
+        ...updateData,
+        updatedAt: new Date(),
+      };
+
+      // Add specific timestamps for each status
+      switch (updateData.status) {
+        case OrderStatus.ACCEPTED:
+          enhancedUpdateData.acceptedAt = new Date();
+          break;
+        case OrderStatus.PICKED_UP:
+          enhancedUpdateData.pickedUpAt = new Date();
+          break;
+        case OrderStatus.IN_TRANSIT:
+          enhancedUpdateData.inTransitAt = new Date();
+          break;
+        case OrderStatus.DELIVERED:
+          enhancedUpdateData.deliveredAt = new Date();
+          break;
+        case OrderStatus.CANCELLED:
+        case OrderStatus.REJECTED:
+          enhancedUpdateData.cancelledAt = new Date();
+          if (!enhancedUpdateData.cancellationReason) {
+            enhancedUpdateData.cancellationReason = "No reason provided";
+          }
+          break;
+      }
+
+      const result = await this.orderRepo.updateOrder(id, enhancedUpdateData);
+      
+      // Log status change for audit trail
+      console.log(`Order ${id} status changed from ${currentOrder.status} to ${updateData.status}`);
+      
+      return result;
     } catch (error) {
       console.log("Error updating order status:", error);
       throw error;

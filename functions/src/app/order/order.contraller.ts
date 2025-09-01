@@ -97,11 +97,7 @@ export class OrderController {
       }
 
       // Check if driver ID is required for accepted status
-      if (status === OrderStatus.ACCEPTED && !driverId) {
-        throw new BadRequestException(
-          "Driver ID is required when accepting an order"
-        );
-      }
+      
 
       // Check if cancellation reason is required
       if (
@@ -113,8 +109,8 @@ export class OrderController {
 
       const updateData = {
         status,
-        driverId,
-        cancellationReason,
+        driverId: driverId ?? null,
+        cancellationReason: cancellationReason ?? null,
         updatedBy: userId,
         updatedAt: new Date(),
       };
